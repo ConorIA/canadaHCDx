@@ -1,0 +1,22 @@
+Package: canadaHCDx
+Type: Package
+Title: Additional functions for the canadaHCD package
+Version: 0.0-1
+Date: 2017-01-15
+Authors@R: person(given = c("Conor", "I."), family = "Anderson",
+    role = c("aut","cre"), email = "conor@conr.ca")
+Maintainer: Conor I. Anderson <conor@conr.ca>
+Description: A number of functions to extend the useful canadaHCD package by Gavin L. Simposon (2016).
+Depends:
+    R (>= 2.10),
+    canadaHCD
+Imports:
+    DT,
+    geosphere,
+    leaflet,
+    shiny
+Suggests:
+License: GPL-2
+URL: https://gitlab.com/ConorIA/canadaHCDx/
+BugReports: https://gitlab.com/ConorIA/canadaHCDx/issues
+RoxygenNote: 5.0.1

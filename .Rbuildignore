@@ -1,0 +1,5 @@
+LICENSE
+\.Rproj$
+^\.Rproj\.user$
+.gitattributes
+.gitignore
