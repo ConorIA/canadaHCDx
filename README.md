@@ -186,7 +186,7 @@ map_stations(find_station_adv(target = c(43.7860, -79.1873), mindist = 10, maxdi
 
 # Disclaimer
 
-The package outlined in this document is published under the GNU General Public License, version 2 (GPL-2.0). The GPL is an open source, copyleft license that allows for the modification and redistribution of original works. This license is what makes it perfectly legal for me to build upon Simpson's work and modify it as I see fit. It is important to note, however, that programs licensed under the GPL come with NO WARRANTY. In our case, a simple R package isn't likely to blow up your computer or kill your cat. Nonetheless, it is always a good idea to pay attention to what you are doing, to ensure that you have downloaded the correct data, and that everything looks ship-shape. 
+The package outlined in this document is published under the GNU General Public License, version 3 (GPL-3.0). The GPL is an open source, copyleft license that allows for the modification and redistribution of original works. This license is what makes it perfectly legal for me to build upon Simpson's work and modify it as I see fit. It is important to note, however, that programs licensed under the GPL come with NO WARRANTY. In our case, a simple R package isn't likely to blow up your computer or kill your cat. Nonetheless, it is always a good idea to pay attention to what you are doing, to ensure that you have downloaded the correct data, and that everything looks ship-shape. 
 
 # What to do if something doesn't work
 
