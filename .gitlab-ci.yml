@@ -1,7 +1,7 @@
 image: conoria/alpine-r
 test:
   script:
-    - R -q -e "install.packages(c('shiny', 'geosphere', 'DT', 'leaflet'), repos='http://cran.rstudio.com/')"
+    - R -q -e "install.packages(c('devtools', 'shiny', 'geosphere', 'DT', 'leaflet'), repos='http://cran.rstudio.com/')"
     - R -q -e 'devtools::install_github("gavinsimpson/canadaHCD")'
     - R CMD build . --no-build-vignettes --no-manual --resave-data
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
