@@ -1,4 +1,7 @@
 LICENSE
+README.Rmd
+README.md
+README.bib
 \.Rproj$
 ^\.Rproj\.user$
 .gitattributes
