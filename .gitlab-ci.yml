@@ -1,6 +1,9 @@
 image: conoria/alpine-r
 test:
   script:
+    - git clone https://github.com/ropensci/git2r.git
+    - R CMD INSTALL --configure-args="--with-libssl-include=/usr/lib/" git2r
+    - rm -rf git2r
     - R -q -e "install.packages(c('devtools', 'shiny', 'geosphere', 'DT', 'leaflet'), repos='http://cran.rstudio.com/')"
     - R -q -e 'devtools::install_github("gavinsimpson/canadaHCD")'
     - R CMD build . --no-build-vignettes --no-manual --resave-data
