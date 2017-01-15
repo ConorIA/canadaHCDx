@@ -1,8 +1,5 @@
 ---
 title: "canadaHCDx: An expansion to provide additional functions for the [`canadaHCD`](https://github.com/gavinsimpson/canadaHCD) package"
-author: "Conor I. Anderson"
-date: "January 15, 2017"
-bibliography: README.bib
 output: 
   html_document: 
     keep_md: yes
@@ -13,14 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 library(canadaHCDx)
 ```
 
-Environment and Climate Change Canada (ECCC) provides archival climate data for a [wealth of climate stations](ftp://client_climate@ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees/Station%20Inventory%20EN.csv) across the country. This data is available for download on the ECCC [data portal](http://climate.weather.gc.ca/) [-@environment_and_climate_change_canada_historical_2016]. This website is useful for browsing data, and is convenient for downloading short periods of data. However, if you are seeking a 30-year baseline, the manual download of the necessary data can become very tedious. In that regard, ECCC also provides a bulk download function to make acquiring that data a little bit easier. While the process is much simpler than it has been in the past, one still must put in a little leg work to: 
+Environment and Climate Change Canada (ECCC) provides archival climate data for a [wealth of climate stations](ftp://client_climate@ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees/Station%20Inventory%20EN.csv) across the country. This data is available for download on the ECCC [data portal](http://climate.weather.gc.ca/). This website is useful for browsing data, and is convenient for downloading short periods of data. However, if you are seeking a 30-year baseline, the manual download of the necessary data can become very tedious. In that regard, ECCC also provides a bulk download function to make acquiring that data a little bit easier. While the process is much simpler than it has been in the past, one still must put in a little leg work to: 
 
 1) Identify the station of interest
 2) Find the correct data set
 3) Download the relevant data files
 4) Process the files into workable data sets
 
-To overcome these limitations, Gavin L. Simpson [-@simpson_canadahcd_2016] has written a package for R, which performs the above processes with minimal user input. The [`canadaHCD`](https://github.com/gavinsimpson/canadaHCD) package is a very useful tool, however, I noticed that there were a couple of features missing that I needed for my personal workflow. This repository provides a small expansion for the `canadaHCD` package. It adds additional search options. In this README, I will strive to outline the basic functionality of both the original package and my expansion.
+To overcome these limitations, Gavin L. Simpson has written a package for R, which performs the above processes with minimal user input. The [`canadaHCD`](https://github.com/gavinsimpson/canadaHCD) package is a very useful tool, however, I noticed that there were a couple of features missing that I needed for my personal workflow. This repository provides a small expansion for the `canadaHCD` package. It adds additional search options. In this README, I will strive to outline the basic functionality of both the original package and my expansion.
 
 # Installing
 
@@ -104,7 +101,7 @@ This table is also fully compatible with the advanced search function. To use a 
 Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. The function is even smart enough to take a search as its list of stations as per the example below.
 
 ### Show a map of all stations that are between 10 and 20 km of UTSC campus
-```{r}
+```{r, eval=FALSE}
 map_stations(find_station_adv(target = c(43.7860, -79.1873), mindist = 10, maxdist = 20), zoom = 7)
 ```
 
@@ -117,5 +114,3 @@ The package outlined in this document is published under the GNU General Public 
 If you run into an issue while you are using the package, you can email me and I can help you troubleshoot the issue. However, if the issue is related to the package code and not your own fault, you should contribute back to the open source community by reporting the issue. If the issue is in one of the basic `canadaHCD` functions, report the issue on [GitHub](https://github.com/gavinsimpson/canadaHCD). If your issue is with one of my extended functions, report the issue to me here on [GitLab](https://gitlab.com/ConorIA/canadaHCDx).
 
 If that seems like a lot of work, just think about how much work it would have been to do all the work this package does for you, or how much time went in to writing these functions!
-
-# References

@@ -2,6 +2,7 @@ LICENSE
 README.Rmd
 README.md
 README.bib
+README.html
 \.Rproj$
 ^\.Rproj\.user$
 .gitattributes
