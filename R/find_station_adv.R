@@ -3,6 +3,7 @@
 ##' @description Search for stations in the Historical Climate Data inventory name, available data, and/or distance to a target.
 ##'
 ##' @param name character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.
+##' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
 ##' @param ignore.case logical; by default the search for station names is not case-sensitive.
 ##' @param baseline vector; optional vector with a start and end year for a desired baseline.
 ##' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
@@ -31,7 +32,7 @@
 ##' find_station_adv(target = 5051, mindist = 0, maxdist = 100)
 ##'
 
-`find_station_adv` <- function(name = NULL, baseline = NULL, type = "hourly", ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
+`find_station_adv` <- function(name = NULL, province = NULL, baseline = NULL, type = "hourly", ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
 
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
@@ -54,6 +55,22 @@
   vars_wanted <- c("Name", "Province", "StationID", "LatitudeDD", "LongitudeDD", data_vars)
   df <- station_data[take, vars_wanted]
   class(df) <- c("hcd_station_list", class(df))
+
+  # If `province` is not NULL, we will filter by province
+  if (!is.null(province)) {
+    # Identify all stations outside of our baseline
+    if (nchar(province) == 2L) {
+      province <- levels(as.factor(station_data$Province))[which(c("AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT") == province)]
+      if (length(province) == 0L) {
+        stop("Incorrect province code provided.")
+      }
+    }
+    province <- toupper(province)
+    df <- df[df$Province == province,]
+    if (nrow(df) == 0) {
+      stop("No data found for that province. Did you spell it correctly?")
+    }
+  }
 
   # If `baseline` is not NULL, filter by available data
   if (!is.null(baseline)) {

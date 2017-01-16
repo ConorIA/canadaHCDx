@@ -4,12 +4,14 @@
 \alias{find_station_adv}
 \title{Find a Historical Climate Data station (advanced)}
 \usage{
-find_station_adv(name = NULL, baseline = NULL, type = "hourly",
-  ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100,
-  sort = TRUE, ...)
+find_station_adv(name = NULL, province = NULL, baseline = NULL,
+  type = "hourly", ignore.case = TRUE, target = NULL, mindist = 0,
+  maxdist = 100, sort = TRUE, ...)
 }
 \arguments{
 \item{name}{character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.}
+
+\item{province}{character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.}
 
 \item{baseline}{vector; optional vector with a start and end year for a desired baseline.}
 
