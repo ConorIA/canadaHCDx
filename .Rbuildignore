@@ -1,9 +1,6 @@
 LICENSE
-README.Rmd
-README.md
-README.bib
-README.html
-\.Rproj$
+README.*
+.Rpro*
+.git*
+^.*\.Rproj$
 ^\.Rproj\.user$
-.gitattributes
-.gitignore
