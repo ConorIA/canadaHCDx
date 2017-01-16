@@ -4,7 +4,10 @@
 \alias{find_station_GUI}
 \title{Find a Historical Climate Data station (GUI)}
 \usage{
-find_station_GUI()
+find_station_GUI(stations = NULL)
+}
+\arguments{
+\item{stations}{optional `data.frame` of stations such as a search result from `find_station()`.}
 }
 \value{
 none

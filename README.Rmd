@@ -73,11 +73,11 @@ Users of the `canadaHCD` package can largely avoid using the Environment and Cli
 
 ## Advanced search
 
-The `find_station_adv()` function adds the ability to search for stations by name (as per the original), by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these three filters in your search. There are a few mandatory arguments for each filter. For instance, if you are searching for a certain baseline period, you must also include the type of data you are looking for (hourly, daily, or monthly). The function is fully documented, so take a look at `?find_station_adv`. Let's look at some examples.
+The `find_station_adv()` function adds the ability to search for stations by name (as per the original), by province, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. There are a few mandatory arguments for each filter. For instance, if you are searching for a certain baseline period, you must also include the type of data you are looking for (hourly, daily, or monthly; defaults to daily). The function is fully documented, so take a look at `?find_station_adv`. Let's look at some examples.
 
-### Find all stations containing "Toronto" in their name
+### Find all stations in the province of Ontario
 ```{r}
-find_station_adv("Toronto")
+find_station_adv(province = "ON")
 ```
 ### Find stations named "Toronto", with hourly data available from 1971 to 2000
 ```{r}
@@ -87,7 +87,7 @@ find_station_adv("Toronto", baseline = c(1971, 2000), type = "hourly")
 ```{r}
 find_station_adv(target = 5051, mindist = 0, maxdist = 100)
 ```
-### Find all stations that are within 10 km of UTSC campus
+### Find all stations that are within 5 km of UTSC campus
 ```{r}
 find_station_adv(target = c(43.7860, -79.1873), mindist = 0, maxdist = 5)
 ```
@@ -96,11 +96,11 @@ find_station_adv(target = c(43.7860, -79.1873), mindist = 0, maxdist = 5)
 
 Sometimes, no matter how versatile one's search function is, it is far easier to just mouse through a table and find the data that one needs. To make this "mousing" just a little easier, I have included a Shiny data table to help with navigating the list of stations. Call the table up by running `find_station_GUI()` with no arguments. 
 
-This table is also fully compatible with the advanced search function. To use a filtered list of stations with the Shiny table, first use the assignment operator to save your search results to an object called `customtable`, then run `find_station_GUI()`. To remove the filter, you can use `rm(customtable)`.
+This table is also fully compatible with the advanced search function. To use a filtered list of stations with the Shiny table, just pass a search result as an argument to the function. This result can be a call to `find_station()` or `find_station_adv()`, or an object or a saved search result.
 
 ## Map function
 
-Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. The function is even smart enough to take a search as its list of stations as per the example below.
+Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous funtion, the map function is even smart enough to take a search as its list of stations as per the example below.
 
 ### Show a map of all stations that are between 10 and 20 km of UTSC campus
 ```{r, eval=FALSE}

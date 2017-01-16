@@ -2,6 +2,8 @@
 ##'
 ##' @description A function to launch a shiny web app to search for Historical Climate Data stations.
 ##'
+##' @param stations optional `data.frame` of stations such as a search result from `find_station()`.
+##'
 ##' @return none
 ##'
 ##' @author Conor I. Anderson
@@ -14,12 +16,12 @@
 ##' @examples
 ##' \dontrun{station_explorer()}
 
-find_station_GUI <- function() {
+find_station_GUI <- function(stations = NULL) {
 
-  if(exists("customtable")) {
-    data <- customtable
-  } else {
+  if (is.null(stations)) {
     data <- station_data
+  } else {
+    data <- stations
   }
 
   app <- shinyApp(

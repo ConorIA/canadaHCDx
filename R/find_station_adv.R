@@ -32,7 +32,7 @@
 ##' find_station_adv(target = 5051, mindist = 0, maxdist = 100)
 ##'
 
-`find_station_adv` <- function(name = NULL, province = NULL, baseline = NULL, type = "hourly", ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
+`find_station_adv` <- function(name = NULL, province = NULL, baseline = NULL, type = "daily", ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
 
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {

@@ -5,7 +5,7 @@
 \title{Find a Historical Climate Data station (advanced)}
 \usage{
 find_station_adv(name = NULL, province = NULL, baseline = NULL,
-  type = "hourly", ignore.case = TRUE, target = NULL, mindist = 0,
+  type = "daily", ignore.case = TRUE, target = NULL, mindist = 0,
   maxdist = 100, sort = TRUE, ...)
 }
 \arguments{
