@@ -33,7 +33,7 @@ devtools::install_git("https://gitlab.com/ConorIA/canadaHCDx.git")
 Finally, load the packages
 
 ```r
-library(canadaHCDx) #canadaHCDx will lead canadaHCD automatically
+library(canadaHCDx) #canadaHCDx will load canadaHCD automatically
 ```
 
 # Basic functions
@@ -68,6 +68,30 @@ find_station("Toronto")
 
 Note that the `tibble` object (a special sort of `data.frame`) won't print more than the first 10 rows by default. To see all of the results, you can wrap the command in `View()` so that it becomes `View(find_station("Toronto"))`.
 
+Note that you can also use wildcards as supported by the `glob2rx()` from the `utils` package by passing the argument `glob = TRUE`, as in the following example.
+
+
+```r
+find_station("Tor*", glob = TRUE)
+```
+
+```
+## # A tibble: 122 × 5
+##                        Name     Province StationID LatitudeDD LongitudeDD
+##                      <fctr>       <fctr>    <fctr>      <dbl>       <dbl>
+## 1                TORRENS LO      Alberta      2440      54.30     -119.67
+## 2                   TORQUAY Saskatchewan      3034      49.08     -103.50
+## 3               TORONTO RSB      Ontario     10673      43.65      -79.38
+## 4                   TORONTO      Ontario      5051      43.67      -79.40
+## 5         TORONTO  WX RADIO      Ontario     30204      43.64      -79.39
+## 6   TORONTO SOLAR RADIATION      Ontario     41863      43.67      -79.40
+## 7              TORONTO CITY      Ontario     31688      43.67      -79.40
+## 8       TORONTO CITY CENTRE      Ontario     48549      43.63      -79.40
+## 9      TORONTO ADMIRAL ROAD      Ontario      7933      43.67      -79.40
+## 10 TORONTO AES HEADQUARTERS      Ontario      7564      43.78      -79.47
+## # ... with 112 more rows
+```
+
 ## Download data
 
 Once you have found your station of interest, you can download hourly, daily and monthly data using the `hcd_hourly()`, `hcd_daily()`, and `hcd_monthly()` functions, respectively. Look at the documentation for each function by typing a question mark, followed by the function name, or using the `help()` function. For instance, to find out what arguments the `hcd_daily()` function takes, type `?hcd_daily` or `help(hcd_daily)`.
@@ -87,7 +111,7 @@ Users of the `canadaHCD` package can largely avoid using the Environment and Cli
 
 ## Advanced search
 
-The `find_station_adv()` function adds the ability to search for stations by name (as per the original), by province, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. There are a few mandatory arguments for each filter. For instance, if you are searching for a certain baseline period, you must also include the type of data you are looking for (hourly, daily, or monthly; defaults to daily). The function is fully documented, so take a look at `?find_station_adv`. Let's look at some examples.
+The `find_station_adv()` function includes the ability to search for stations by name (as per the original), but adds filters to search by province, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. There are a few mandatory arguments for each filter. For instance, if you are searching for a certain baseline period, you must also include the type of data you are looking for (hourly, daily, or monthly; defaults to daily). The function is fully documented, so take a look at `?find_station_adv`. Let's look at some examples.
 
 ### Find all stations in the province of Ontario
 

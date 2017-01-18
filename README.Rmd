@@ -38,7 +38,7 @@ devtools::install_git("https://gitlab.com/ConorIA/canadaHCDx.git")
 ```
 Finally, load the packages
 ``` {r, eval = FALSE}
-library(canadaHCDx) #canadaHCDx will lead canadaHCD automatically
+library(canadaHCDx) #canadaHCDx will load canadaHCD automatically
 ```
 
 # Basic functions
@@ -54,6 +54,12 @@ find_station("Toronto")
 ```
 
 Note that the `tibble` object (a special sort of `data.frame`) won't print more than the first 10 rows by default. To see all of the results, you can wrap the command in `View()` so that it becomes `View(find_station("Toronto"))`.
+
+Note that you can also use wildcards as supported by the `glob2rx()` from the `utils` package by passing the argument `glob = TRUE`, as in the following example.
+
+```{r}
+find_station("Tor*", glob = TRUE)
+```
 
 ## Download data
 
@@ -73,7 +79,7 @@ Users of the `canadaHCD` package can largely avoid using the Environment and Cli
 
 ## Advanced search
 
-The `find_station_adv()` function adds the ability to search for stations by name (as per the original), by province, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. There are a few mandatory arguments for each filter. For instance, if you are searching for a certain baseline period, you must also include the type of data you are looking for (hourly, daily, or monthly; defaults to daily). The function is fully documented, so take a look at `?find_station_adv`. Let's look at some examples.
+The `find_station_adv()` function includes the ability to search for stations by name (as per the original), but adds filters to search by province, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. There are a few mandatory arguments for each filter. For instance, if you are searching for a certain baseline period, you must also include the type of data you are looking for (hourly, daily, or monthly; defaults to daily). The function is fully documented, so take a look at `?find_station_adv`. Let's look at some examples.
 
 ### Find all stations in the province of Ontario
 ```{r}
