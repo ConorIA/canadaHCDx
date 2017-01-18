@@ -3,8 +3,9 @@
 ##' @description Search for stations in the Historical Climate Data inventory name, available data, and/or distance to a target.
 ##'
 ##' @param name character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.
-##' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
 ##' @param ignore.case logical; by default the search for station names is not case-sensitive.
+##' @param glob logical; use wildcards in station name as detailed in \code{link{glob2rx}}.
+##' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
 ##' @param baseline vector; optional vector with a start and end year for a desired baseline.
 ##' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
 ##' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
@@ -16,14 +17,15 @@
 ##' @return An object of class \code{"hcd_station_list"}, which is a \code{"tbl_df"}, containing details of any matching HCD stations.
 ##'
 ##' @importFrom geosphere distGeo
+##' @importFrom utils glob2rx
 ##'
 ##' @export
 ##'
 ##' @author Conor I. Anderson
 ##'
 ##' @examples
-##' # Find all stations containing "Regina" in their name.
-##' find_station_adv("Regina")
+##' # Find all stations with names beginning in  "Reg".
+##' find_station_adv("Reg*", glob = TRUE)
 ##'
 ##' # Find stations named "Yellowknife", with hourly data available from 1971 to 2000.
 ##' find_station_adv("Yellowknife", baseline = c(1971, 2000), type = "hourly")
@@ -32,10 +34,13 @@
 ##' find_station_adv(target = 5051, mindist = 0, maxdist = 100)
 ##'
 
-`find_station_adv` <- function(name = NULL, province = NULL, baseline = NULL, type = "daily", ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
+`find_station_adv` <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
 
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
+    if (glob) {
+      name <- glob2rx(name)
+    }
     take <- grep(name, station_data$Name, ignore.case = ignore.case, ...)
   } else {
     take <- 1:nrow(station_data)
