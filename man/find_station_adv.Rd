@@ -6,7 +6,7 @@
 \usage{
 find_station_adv(name = NULL, ignore.case = TRUE, glob = FALSE,
   province = NULL, baseline = NULL, type = "daily", target = NULL,
-  mindist = 0, maxdist = 100, sort = TRUE, ...)
+  dist = 0:100, sort = TRUE, ...)
 }
 \arguments{
 \item{name}{character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.}
@@ -23,9 +23,7 @@ find_station_adv(name = NULL, ignore.case = TRUE, glob = FALSE,
 
 \item{target}{numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).}
 
-\item{mindist}{numeric; minimum distance from the target in km. Only used if a target is specified. (defaults to 0)}
-
-\item{maxdist}{numeric; maximum distance from the target in km. Only used if a target is specified. (defaults to 100)}
+\item{dist}{numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)}
 
 \item{sort}{Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.}
 
@@ -45,7 +43,7 @@ find_station_adv("Reg*", glob = TRUE)
 find_station_adv("Yellowknife", baseline = c(1971, 2000), type = "hourly")
 
 # Find all stations between 0 and 100 km from Station No. 5051.
-find_station_adv(target = 5051, mindist = 0, maxdist = 100)
+find_station_adv(target = 5051, dist = 0:100)
 
 }
 \author{

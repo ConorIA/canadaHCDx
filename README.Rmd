@@ -91,11 +91,11 @@ find_station_adv("Toronto", baseline = c(1971, 2000), type = "hourly")
 ```
 ### Find all stations between 0 and 100 km from Station No. 5051
 ```{r}
-find_station_adv(target = 5051, mindist = 0, maxdist = 100)
+find_station_adv(target = 5051, dist = 0:100)
 ```
 ### Find all stations that are within 5 km of UTSC campus
 ```{r}
-find_station_adv(target = c(43.7860, -79.1873), mindist = 0, maxdist = 5)
+find_station_adv(target = c(43.7860, -79.1873), dist = 0:5)
 ```
 
 ## Station search GUI
@@ -110,7 +110,7 @@ Sometimes a long list of stations is hard to visualize spatially. To overcome th
 
 ### Show a map of all stations that are between 10 and 20 km of UTSC campus
 ```{r, eval=FALSE}
-map_stations(find_station_adv(target = c(43.7860, -79.1873), mindist = 10, maxdist = 20), zoom = 7)
+map_stations(find_station_adv(target = c(43.7860, -79.1873), dist = 10:20), zoom = 7)
 ```
 
 # Disclaimer

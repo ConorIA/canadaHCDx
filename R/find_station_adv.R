@@ -9,8 +9,7 @@
 ##' @param baseline vector; optional vector with a start and end year for a desired baseline.
 ##' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
 ##' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
-##' @param mindist numeric; minimum distance from the target in km. Only used if a target is specified. (defaults to 0)
-##' @param maxdist numeric; maximum distance from the target in km. Only used if a target is specified. (defaults to 100)
+##' @param dist numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)
 ##' @param sort Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.
 ##' @param ... Additional arguments passed to \code{\link{grep}}.
 ##'
@@ -31,10 +30,10 @@
 ##' find_station_adv("Yellowknife", baseline = c(1971, 2000), type = "hourly")
 ##'
 ##' # Find all stations between 0 and 100 km from Station No. 5051.
-##' find_station_adv(target = 5051, mindist = 0, maxdist = 100)
+##' find_station_adv(target = 5051, dist = 0:100)
 ##'
 
-`find_station_adv` <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
+`find_station_adv` <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", target = NULL, dist = 0:100, sort = TRUE, ...) {
 
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
@@ -101,7 +100,7 @@
     for (j in 1:nrow(df)) {
       df$Dist[j] <- (distGeo(p1, c(df$LongitudeDD[j], df$LatitudeDD[j]))/1000)
     }
-    df <- df[(!is.na(df$Dist) & (df$Dist >= mindist) & (df$Dist <= maxdist)),]
+    df <- df[(!is.na(df$Dist) & (df$Dist >= min(dist)) & (df$Dist <= max(dist))),]
     if (sort == TRUE) df <- df[order(df$Dist),]
   }
   df
