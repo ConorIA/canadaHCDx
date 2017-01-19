@@ -103,6 +103,30 @@ If I wanted to download daily data for Toronto City (station no. 5051) from 1971
 city <- hcd_daily(5051, 1971:2000)
 ```
 
+```r
+city
+```
+
+```
+## # A tibble: 10,958 × 13
+##    Station       Date MaxTemp MinTemp MeanTemp HeatDegDays CoolDegDays
+##      <int>     <date>   <dbl>   <dbl>    <dbl>       <dbl>       <dbl>
+## 1     5051 1971-01-01    -0.6   -10.0     -5.3        23.3           0
+## 2     5051 1971-01-02     3.3    -8.9     -2.8        20.8           0
+## 3     5051 1971-01-03     2.2     0.0      1.1        16.9           0
+## 4     5051 1971-01-04     6.7    -0.6      3.1        14.9           0
+## 5     5051 1971-01-05    -0.6    -3.3     -2.0        20.0           0
+## 6     5051 1971-01-06    -4.4    -8.9     -6.7        24.7           0
+## 7     5051 1971-01-07    -5.6   -11.7     -8.7        26.7           0
+## 8     5051 1971-01-08    -6.1   -13.9    -10.0        28.0           0
+## 9     5051 1971-01-09    -1.1    -8.3     -4.7        22.7           0
+## 10    5051 1971-01-10     0.6    -5.6     -2.5        20.5           0
+## # ... with 10,948 more rows, and 6 more variables: TotalRain <dbl>,
+## #   TotalSnow <dbl>, TotalPrecip <dbl>, GroundSnow <int>,
+## #   MaxGustDir <int>, MaxGustSpeed <chr>
+```
+
+
 Make sure to use the assignment operator (`<-`) to save the data into an R object, otherwise the data will just print out to the console, and won't get saved anywhere in the memory. 
 
 # Extra functions in the expansion pack
@@ -138,7 +162,7 @@ find_station_adv(province = "ON")
 ### Find stations named "Toronto", with hourly data available from 1971 to 2000
 
 ```r
-find_station_adv("Toronto", baseline = c(1971, 2000), type = "hourly")
+find_station_adv("Toronto", baseline = 1971:2000, type = "hourly")
 ```
 
 ```
@@ -202,13 +226,45 @@ This table is also fully compatible with the advanced search function. To use a 
 
 ## Map function
 
-Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous funtion, the map function is even smart enough to take a search as its list of stations as per the example below.
+Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous function, the map function is even smart enough to take a search as its list of stations as per the example below.
 
 ### Show a map of all stations that are between 10 and 20 km of UTSC campus
 
 ```r
 map_stations(find_station_adv(target = c(43.7860, -79.1873), dist = 10:20), zoom = 7)
 ```
+
+## Quick audit
+
+The `quick_audit()` function will return a tibble of the proportion of missing values for a station. For now, it has only been tested with daily data. The following code will return the proportion of missing values at Yellowknife Hydro:
+
+
+```r
+yh <- hcd_daily(1707, 1981:2010)
+```
+
+```r
+quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"))
+```
+
+```
+## # A tibble: 30 × 4
+##     Year    MaxTemp    MinTemp   MeanTemp
+##    <int>      <dbl>      <dbl>      <dbl>
+## 1   1981 0.08219178 0.08219178 0.08219178
+## 2   1982 0.08493151 0.08493151 0.08493151
+## 3   1983 0.00000000 0.00000000 0.00000000
+## 4   1984 0.00000000 0.00000000 0.00000000
+## 5   1985 0.33698630 0.33698630 0.33698630
+## 6   1986 0.33150685 0.33150685 0.33150685
+## 7   1987 0.08493151 0.08493151 0.08493151
+## 8   1988 0.50273224 0.50273224 0.50273224
+## 9   1989 1.00000000 1.00000000 1.00000000
+## 10  1990 0.08219178 0.08219178 0.08219178
+## # ... with 20 more rows
+```
+
+Note that you can use `reverse = TRUE` as an argument to instead return the "completeness" of the data. 
 
 # Disclaimer
 

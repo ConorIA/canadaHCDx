@@ -8,6 +8,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(canadaHCDx)
+city <- hcd_daily(5051, 1971:2000)
+yh <- hcd_daily(1707, 1981:2010)
 ```
 
 __Build status:__ [![build status](https://gitlab.com/ConorIA/canadaHCDx/badges/master/build.svg)](https://gitlab.com/ConorIA/canadaHCDx/commits/master)
@@ -70,6 +72,10 @@ If I wanted to download daily data for Toronto City (station no. 5051) from 1971
 ```{r, eval = FALSE}
 city <- hcd_daily(5051, 1971:2000)
 ```
+```{r}
+city
+```
+
 
 Make sure to use the assignment operator (`<-`) to save the data into an R object, otherwise the data will just print out to the console, and won't get saved anywhere in the memory. 
 
@@ -87,7 +93,7 @@ find_station_adv(province = "ON")
 ```
 ### Find stations named "Toronto", with hourly data available from 1971 to 2000
 ```{r}
-find_station_adv("Toronto", baseline = c(1971, 2000), type = "hourly")
+find_station_adv("Toronto", baseline = 1971:2000, type = "hourly")
 ```
 ### Find all stations between 0 and 100 km from Station No. 5051
 ```{r}
@@ -106,12 +112,25 @@ This table is also fully compatible with the advanced search function. To use a 
 
 ## Map function
 
-Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous funtion, the map function is even smart enough to take a search as its list of stations as per the example below.
+Sometimes a long list of stations is hard to visualize spatially. To overcome this, I added a third function, which takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous function, the map function is even smart enough to take a search as its list of stations as per the example below.
 
 ### Show a map of all stations that are between 10 and 20 km of UTSC campus
 ```{r, eval=FALSE}
 map_stations(find_station_adv(target = c(43.7860, -79.1873), dist = 10:20), zoom = 7)
 ```
+
+## Quick audit
+
+The `quick_audit()` function will return a tibble of the proportion of missing values for a station. For now, it has only been tested with daily data. The following code will return the proportion of missing values at Yellowknife Hydro:
+
+```{r, eval = FALSE}
+yh <- hcd_daily(1707, 1981:2010)
+```
+```{r}
+quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"))
+```
+
+Note that you can use `reverse = TRUE` as an argument to instead return the "completeness" of the data. 
 
 # Disclaimer
 
