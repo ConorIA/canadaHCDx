@@ -13,7 +13,7 @@
 ##' @param sort Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.
 ##' @param ... Additional arguments passed to \code{\link{grep}}.
 ##'
-##' @return An object of class \code{"hcd_station_list"}, which is a \code{"tbl_df"}, containing details of any matching HCD stations.
+##' @return A \code{tbl_df}, containing details of any matching HCD stations.
 ##'
 ##' @importFrom geosphere distGeo
 ##' @importFrom utils glob2rx

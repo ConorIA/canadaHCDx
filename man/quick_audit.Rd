@@ -7,7 +7,7 @@
 quick_audit(datain, variables, reverse = FALSE)
 }
 \arguments{
-\item{datain}{A \code{\link{tbl_df}} containing the data to process}
+\item{datain}{A \code{tbl_df} containing the data to process}
 
 \item{variables}{numeric or character; By default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names.}
 

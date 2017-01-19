@@ -2,7 +2,7 @@
 ##'
 ##' @description A function to launch a shiny web app to search for Historical Climate Data stations.
 ##'
-##' @param stations optional `data.frame` of stations such as a search result from `find_station()`.
+##' @param stations optional \code{tbl_df} of stations such as a search result from \code{find_station()}.
 ##'
 ##' @return none
 ##'

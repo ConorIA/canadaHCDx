@@ -7,7 +7,7 @@
 find_station_GUI(stations = NULL)
 }
 \arguments{
-\item{stations}{optional `data.frame` of stations such as a search result from `find_station()`.}
+\item{stations}{optional \code{tbl_df} of stations such as a search result from \code{find_station()}.}
 }
 \value{
 none

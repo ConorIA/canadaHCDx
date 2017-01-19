@@ -30,7 +30,7 @@ find_station_adv(name = NULL, ignore.case = TRUE, glob = FALSE,
 \item{...}{Additional arguments passed to \code{\link{grep}}.}
 }
 \value{
-An object of class \code{"hcd_station_list"}, which is a \code{"tbl_df"}, containing details of any matching HCD stations.
+A \code{tbl_df}, containing details of any matching HCD stations.
 }
 \description{
 Search for stations in the Historical Climate Data inventory name, available data, and/or distance to a target.

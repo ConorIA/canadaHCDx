@@ -2,7 +2,7 @@
 ##'
 ##' @description Returns a tibble with the proportion of missing values at a station for a given year and variables.
 ##'
-##' @param datain A \code{\link{tbl_df}} containing the data to process
+##' @param datain A \code{tbl_df} containing the data to process
 ##' @param variables numeric or character; By default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names.
 ##' @param reverse Boolean; if true, will show proportion present instead of proportion missing.
 ##'

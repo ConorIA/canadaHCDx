@@ -15,20 +15,19 @@ To overcome these limitations, Gavin L. Simpson has written a package for R, whi
 
 # Installing
 
-Most R packages are installed from the Comprehensive R Archive Network (CRAN). `canadaHCD`, however, remains under development and is not hosted on the CRAN. Its source code is freely available on [GitHub](https://github.com/), so we can harness the wonderful `devtools` package to install it:
+Most R packages are installed from the Comprehensive R Archive Network (CRAN). `canadaHCD`, however, remains under development and is not hosted on the CRAN. Its source code is freely available on [GitHub](https://github.com/), so we can harness the wonderful `remotes` package to install it:
 
-First, install the `devtools` package if you don't have it already
+First, install the `remotes` package if you don't have it already
 
 ```r
-install.packages("devtools", repos = "https://cran.rstudio.com/")
+source("https://raw.githubusercontent.com/r-pkgs/remotes/master/install-github.R")$value("r-pkgs/remotes")
 ```
 
 Next, install the `canadaHCD` package, and install this expansion pack. The first line will install the original package. The second line will install this expansion.
 
 
 ```r
-devtools::install_github("gavinsimpson/canadaHCD")
-devtools::install_git("https://gitlab.com/ConorIA/canadaHCDx.git")
+remotes::install_git("https://gitlab.com/ConorIA/canadaHCDx.git")
 ```
 Finally, load the packages
 
