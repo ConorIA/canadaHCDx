@@ -16,8 +16,8 @@ install:
 # Adapt as necessary starting from here
 
 build_script:
-  - R -q -e 'install.packages("devtools", repos="https://cran.rstudio.com/")'
-  - R -q -e 'devtools::install_github("gavinsimpson/canadaHCD")'
+  - R -q -e "install.packages('devtools', repos='https://cran.rstudio.com/')"
+  - R -q -e "devtools::install_github('gavinsimpson/canadaHCD')"
   - travis-tool.sh install_deps
 
 test_script:
