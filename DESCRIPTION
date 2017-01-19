@@ -6,7 +6,8 @@ Date: 2017-01-15
 Authors@R: person(given = c("Conor", "I."), family = "Anderson",
     role = c("aut","cre"), email = "conor@conr.ca")
 Maintainer: Conor I. Anderson <conor@conr.ca>
-Description: A number of functions to extend the useful canadaHCD package by Gavin L. Simposon (2016).
+Description: A number of functions to extend the useful canadaHCD package by
+    Gavin L. Simposon (2016).
 Depends:
     R (>= 2.10),
     canadaHCD
@@ -16,8 +17,8 @@ Imports:
     leaflet,
     shiny,
     tibble
-Suggests:
-License: GPL-2
+Remotes: github::gavinsimpson/canadaHCD
+License: GPL-3
 URL: https://gitlab.com/ConorIA/canadaHCDx/
 BugReports: https://gitlab.com/ConorIA/canadaHCDx/issues
 RoxygenNote: 5.0.1
