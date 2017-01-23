@@ -4,3 +4,4 @@ README.*
 .git*
 ^.*\.Rproj$
 ^\.Rproj\.user$
+install_canadaHCDx.R

@@ -15,21 +15,16 @@ To overcome these limitations, Gavin L. Simpson has written a package for R, whi
 
 # Installing
 
-Most R packages are installed from the Comprehensive R Archive Network (CRAN). `canadaHCD`, however, remains under development and is not hosted on the CRAN. Its source code is freely available on [GitHub](https://github.com/), so we can harness the wonderful `remotes` package to install it:
+Most R packages are installed from the Comprehensive R Archive Network (CRAN). `canadaHCD`, however, remains under development and is not hosted on the CRAN. Its source code is freely available on [GitHub](https://github.com/), so we can harness the wonderful `remotes` package to install it. You may also require the "`git2r`" package to access the git repository. 
 
-First, install the `remotes` package if you don't have it already
-
-```r
-source("https://raw.githubusercontent.com/r-pkgs/remotes/master/install-github.R")$value("r-pkgs/remotes")
-```
-
-Next, install the `canadaHCDx` expansion pack, which will automatically pull in the original `canadaHCD` package.
-
+For you convenience, I have written a quick script that will install `remotes`, `git2r`, `canadaHCD`, `canadaHCDx`, and all dependencies. If you would rather install these components individually, take a look at the script to see which commands to run. 
 
 ```r
-remotes::install_git("https://gitlab.com/ConorIA/canadaHCDx.git")
+source("https://gitlab.com/ConorIA/canadaHCDx/raw/master/install_canadaHCDx.R")
 ```
-Finally, load the packages
+_Note that the above script can also be used to keep `remotes`, `canadaHCD` and `canadaHCDx` up to date._
+
+Once the packages have installed, load `canadaHCDx` by:
 
 ```r
 library(canadaHCDx) #canadaHCDx will load canadaHCD automatically
