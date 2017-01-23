@@ -125,6 +125,12 @@ yh <- hcd_daily(1707, 1981:2010)
 quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"))
 ```
 
+You can also summarize missing data by month using:
+
+```{r}
+quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"), by = "month")
+```
+
 Note that you can use `reverse = TRUE` as an argument to instead return the "completeness" of the data. 
 
 # Disclaimer

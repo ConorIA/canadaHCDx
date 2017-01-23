@@ -4,12 +4,14 @@
 \alias{quick_audit}
 \title{Perform a quick audit for missing values at a given station}
 \usage{
-quick_audit(datain, variables, reverse = FALSE)
+quick_audit(datain, variables, by = "year", reverse = FALSE)
 }
 \arguments{
 \item{datain}{A \code{tbl_df} containing the data to process}
 
 \item{variables}{numeric or character; By default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names.}
+
+\item{by}{character; whether values should be reported annually (\code{by = year}), or monthly (\code{by = month}).}
 
 \item{reverse}{Boolean; if true, will show proportion present instead of proportion missing.}
 }
@@ -20,7 +22,7 @@ Returns a tibble with the proportion of missing values at a station for a given 
 
 \dontrun{
 city <- hcd_daily(5051, 1981:2010)
-quick_audit(city, "MaxTemp", reverse = TRUE)
+quick_audit(city, "MaxTemp", by = "year", reverse = TRUE)
 }
 
 }

@@ -258,6 +258,30 @@ quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"))
 ## # ... with 20 more rows
 ```
 
+You can also summarize missing data by month using:
+
+
+```r
+quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"), by = "month")
+```
+
+```
+## # A tibble: 360 × 6
+##     Year Month  `Year-month` MaxTemp MinTemp MeanTemp
+##    <chr> <chr> <S3: yearmon>   <dbl>   <dbl>    <dbl>
+## 1   1981    01      Jan 1981       0       0        0
+## 2   1981    02      Feb 1981       0       0        0
+## 3   1981    03      Mar 1981       0       0        0
+## 4   1981    04      Apr 1981       0       0        0
+## 5   1981    05      May 1981       0       0        0
+## 6   1981    06      Jun 1981       0       0        0
+## 7   1981    07      Jul 1981       0       0        0
+## 8   1981    08      Aug 1981       0       0        0
+## 9   1981    09      Sep 1981       0       0        0
+## 10  1981    10      Oct 1981       0       0        0
+## # ... with 350 more rows
+```
+
 Note that you can use `reverse = TRUE` as an argument to instead return the "completeness" of the data. 
 
 # Disclaimer

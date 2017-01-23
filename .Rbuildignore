@@ -5,3 +5,5 @@ README.*
 ^.*\.Rproj$
 ^\.Rproj\.user$
 install_canadaHCDx.R
+appveyor.yml
+.gitlab-ci.yml
