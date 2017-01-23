@@ -23,7 +23,7 @@ First, install the `remotes` package if you don't have it already
 source("https://raw.githubusercontent.com/r-pkgs/remotes/master/install-github.R")$value("r-pkgs/remotes")
 ```
 
-Next, install the `canadaHCD` package, and install this expansion pack. The first line will install the original package. The second line will install this expansion.
+Next, install the `canadaHCDx` expansion pack, which will automatically pull in the original `canadaHCD` package.
 
 
 ```r
