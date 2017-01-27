@@ -6,6 +6,7 @@
 ##' @param zoom numeric; the level to zoom the map to.
 ##'
 ##' @importFrom leaflet "%>%" leaflet addTiles setView addMarkers
+##' @importFrom tibble tibble
 ##'
 ##' @export
 ##'
@@ -13,11 +14,11 @@
 ##'
 ##' @examples
 ##' # Make a map of all the stations.
-##' \dontrun{map_stations(station_data$StationID)}
+##' map_stations(station_data$StationID)
 ##' # Make a map of all the stations named "Yellowknife".
-##' \dontrun{map_stations(find_station(name = "Yellowknife"))}
+##' map_stations(find_station_adv(name = "Yellowknife"))
 ##' # Make a map of all stations within 50km of Toronto Station 5051.
-##' \dontrun{map_stations(find_station_adv(target = 5051, maxdist = 50))}
+##' map_stations(find_station_adv(target = 5051, dist = 0:50))
 
 map_stations <- function(station, zoom) {
 
@@ -36,26 +37,23 @@ map_stations <- function(station, zoom) {
   }
   poi <- station_data[poi,]
 
-  hilat <- ceiling(max(poi$LatitudeDD))
-  lolat <- floor(min(poi$LatitudeDD))
-  hilon <- ceiling(max(poi$LongitudeDD))
-  lolon <- floor(min(poi$LongitudeDD))
-  lats <- (hilat + lolat)/2
-  lons <- (hilon + lolon)/2
+  if (nrow(poi) == 1L){
+    lats <- poi$LatitudeDD
+    lons <- poi$LongitudeDD
+    latrng <- 0
+  } else {
+    hilat <- ceiling(max(poi$LatitudeDD))
+    lolat <- floor(min(poi$LatitudeDD))
+    hilon <- ceiling(max(poi$LongitudeDD))
+    lolon <- floor(min(poi$LongitudeDD))
+    lats <- (hilat + lolat)/2
+    lons <- (hilon + lolon)/2
+    latrng <- (hilat - lolat)
+  }
 
   if (missing(zoom)) {
-    latrng <- (hilat - lolat)
-    if (latrng >= 16) {
-      zoom = 4
-    } else if (latrng >= 8) {
-      zoom = 5
-    } else if (latrng >= 5) {
-      zoom = 6
-    } else if (latrng >= 2) {
-      zoom = 7
-    } else if (latrng == 1) {
-      zoom = 8
-    } else zoom = 10
+    zoomlevels <- tibble(range = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), zoom = c(10,8,7,7,7,6,6,6,5,5,5,5,5,5,5,5,4))
+    zoom <- zoomlevels$zoom[which(zoomlevels$range == min(as.integer(latrng), 16L))]
   }
 
   leaflet() %>% addTiles() %>%

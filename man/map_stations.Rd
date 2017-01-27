@@ -16,11 +16,11 @@ Show the stations of interest on an interactive map using Leaflet. Zoom levels a
 }
 \examples{
 # Make a map of all the stations.
-\dontrun{map_stations(station_data$StationID)}
+map_stations(station_data$StationID)
 # Make a map of all the stations named "Yellowknife".
-\dontrun{map_stations(find_station(name = "Yellowknife"))}
+map_stations(find_station_adv(name = "Yellowknife"))
 # Make a map of all stations within 50km of Toronto Station 5051.
-\dontrun{map_stations(find_station_adv(target = 5051, maxdist = 50))}
+map_stations(find_station_adv(target = 5051, dist = 0:50))
 }
 \author{
 Conor I. Anderson

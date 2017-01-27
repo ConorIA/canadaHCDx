@@ -20,10 +20,9 @@ Returns a tibble with the proportion of missing values at a station for a given 
 }
 \examples{
 
-\dontrun{
 city <- hcd_daily(5051, 1981:2010)
 quick_audit(city, "MaxTemp", by = "year", reverse = TRUE)
-}
+quick_audit(city, "MaxTemp", by = "month")
 
 }
 \author{

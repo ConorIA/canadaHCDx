@@ -16,7 +16,7 @@ none
 A function to launch a shiny web app to search for Historical Climate Data stations.
 }
 \examples{
-\dontrun{station_explorer()}
+\dontrun{find_station_GUI()}
 }
 \author{
 Conor I. Anderson

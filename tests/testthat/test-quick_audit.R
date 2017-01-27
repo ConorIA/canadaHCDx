@@ -1,27 +1,37 @@
 library("testthat")
 library("canadaHCDx")
+indat <- canadaHCD::hcd_daily("1707", 1989:1990)
 
 context("Test `quick_audit()`")
 
 ## test quick audit by year
 test_that("quick_audit() can audit by year", {
-  skip_on_cran()
-  df <- canadaHCD::hcd_daily("1707", 1989:1990)
-  df2 <- quick_audit(df, variables = c("MaxTemp", "MinTemp", "MeanTemp"), by = "year")
-  expect_that(df2, is_a("tbl_df"))
-  expect_identical(nrow(df2), 2L)
-  expect_identical(ncol(df2), 4L)
-  expect_equal(df2$MaxTemp[2], 0.08219178)
+  df <- quick_audit(indat, variables = c("MaxTemp", "MinTemp", "MeanTemp"), by = "year")
+  expect_that(df, is_a("tbl_df"))
+  expect_output(str(df), "2 obs")
+  expect_output(str(df), "4 variables")
+  expect_equal(df$MaxTemp[2], 0.08219178)
 })
 
 ## test quick audit by month
 test_that("quick_audit() can audit by month", {
-  skip_on_cran()
-  df <- canadaHCD::hcd_daily("1707", 1989:1990)
-  df2 <- quick_audit(df, variables = c("MaxTemp", "MinTemp", "MeanTemp"), by = "month")
-  expect_that(df2, is_a("tbl_df"))
-  expect_identical(nrow(df2), 24L)
-  expect_identical(ncol(df2), 6L)
-  expect_equal(df2$MinTemp[18], 1)
+  df <- quick_audit(indat, variables = c("MaxTemp", "MinTemp", "MeanTemp"), by = "month")
+  expect_that(df, is_a("tbl_df"))
+  expect_output(str(df), "24 obs")
+  expect_output(str(df), "6 variables")
+  expect_equal(df$MinTemp[18], 1)
 })
 
+## test quick_audit with missing variables and in reverse
+test_that("quick_audit() can audit with missing variables", {
+  df <- quick_audit(indat, reverse = TRUE)
+  expect_that(df, is_a("tbl_df"))
+  expect_output(str(df), "2 obs")
+  expect_output(str(df), "13 variables")
+  expect_lt(df$MeanTemp[2], 1)
+})
+
+## test quick_audit fails if "year" or "month" not set correctly
+test_that("quick_audit() will fail if `by` is a typo", {
+  expect_error(quick_audit(indat, by = "mnoth"), "You must choose by \"month\", or by \"year\".", fixed=TRUE)
+})

@@ -14,7 +14,7 @@
 ##' @export
 ##'
 ##' @examples
-##' \dontrun{station_explorer()}
+##' \dontrun{find_station_GUI()}
 
 find_station_GUI <- function(stations = NULL) {
 
