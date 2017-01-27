@@ -1,7 +1,9 @@
 before_script:
-  - apk --no-cache upgrade
   - export _R_CHECK_CRAN_INCOMING_=FALSE
   - export _R_CHECK_FORCE_SUGGESTS_=TRUE
+  - apk --no-cache upgrade && apk --no-cache add tzdata
+  - cp /usr/share/zoneinfo/America/Toronto /etc/localtime
+  - echo "America/Toronto" >  /etc/timezone
 
 build:
   stage: test
