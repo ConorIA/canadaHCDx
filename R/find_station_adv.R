@@ -58,7 +58,6 @@
   # Make a table with the info we want
   vars_wanted <- c("Name", "Province", "StationID", "LatitudeDD", "LongitudeDD", data_vars)
   df <- station_data[take, vars_wanted]
-  class(df) <- c("hcd_station_list", class(df))
 
   # If `province` is not NULL, we will filter by province
   if (!is.null(province)) {
@@ -103,5 +102,6 @@
     df <- df[(!is.na(df$Dist) & (df$Dist >= min(dist)) & (df$Dist <= max(dist))),]
     if (sort == TRUE) df <- df[order(df$Dist),]
   }
+  class(df) <- c("hcd_station_list", class(df))
   df
 }

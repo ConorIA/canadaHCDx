@@ -8,5 +8,6 @@
                            "Elevation", "FirstYear", "LastYear", "HourlyFirstYr", "HourlyLastYr",
                            "DailyFirstYr", "DailyLastYr", "MonthlyFirstYr", "MonthlyLastYr")
   station_timestamp <- gsub(" UTC", "", gsub("Modified Date: ", "", read_lines(f, n_max = 1)))
+  class(station_data) <- c("hcd_station_list", class(station_data))
   save(station_data, station_timestamp, file = "R/sysdata.rda", compress = "xz", compression_level = 9)
 }

@@ -1,10 +1,12 @@
-image: conoria/alpine-r
+before_script:
+  - apk --no-cache upgrade
+  - export _R_CHECK_CRAN_INCOMING_=FALSE
+  - export _R_CHECK_FORCE_SUGGESTS_=TRUE
 
-variables:
-  BUILD_FLAGS: "--no-build-vignettes --no-manual"
-
-test:
+alpine-r:
+  stage: test
+  image: conoria/alpine-r
   script:
-    - R CMD build . ${BUILD_FLAGS}
     - Rscript -e 'devtools::install_deps(dependencies = TRUE)'
-    - R CMD check $(ls -1t *.tar.gz | head -n 1) ${BUILD_FLAGS} --as-cran
+    - Rscript -e 'devtools::check()'
+    - Rscript -e 'covr::package_coverage(type = "tests", quiet = FALSE)'
