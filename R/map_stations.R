@@ -13,8 +13,6 @@
 ##' @author Conor I. Anderson
 ##'
 ##' @examples
-##' # Make a map of all the stations.
-##' map_stations(station_data$StationID)
 ##' # Make a map of all the stations named "Yellowknife".
 ##' map_stations(find_station_adv(name = "Yellowknife"))
 ##' # Make a map of all stations within 50km of Toronto Station 5051.
