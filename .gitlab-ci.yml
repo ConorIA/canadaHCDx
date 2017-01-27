@@ -1,18 +1,17 @@
 before_script:
   - export _R_CHECK_CRAN_INCOMING_=FALSE
   - export _R_CHECK_FORCE_SUGGESTS_=TRUE
-  - apk --no-cache upgrade && apk --no-cache add tzdata
-  - cp /usr/share/zoneinfo/America/Toronto /etc/localtime
-  - echo "America/Toronto" >  /etc/timezone
 
-build:
+r-base:
   stage: test
-  image: conoria/alpine-r
+  image: r-base
   script:
-    - Rscript -e 'devtools::install_deps(dependencies = TRUE)'
+    - apt-get update -qq
+    - apt-get install -y --no-install-recommends libcurl4-openssl-dev libssh2-1-dev libssl-dev git
+    - Rscript -e 'install.packages(c("devtools", "roxygen2", "testthat", "covr"), repos = "https://cran.rstudio.com/")'
+    - Rscript -e 'devtools::install_deps()'
     - Rscript -e 'devtools::check()'
-    - Rscript -e 'covr::package_coverage(type = "tests", quiet = FALSE)'
-    - Rscript -e 'covr::report(covr::package_coverage(), file = "index.html")'
+    - Rscript -e 'cov <- covr::package_coverage(type = "all", quiet = FALSE); covr::report(cov, file = "index.html"); cov'
     - mkdir -p coverage && mv lib coverage/ && mv index.html coverage/
   artifacts:
     paths:
@@ -22,7 +21,7 @@ pages:
   stage: deploy
   image: alpine
   dependencies:
-    - build
+    - r-base
   script:
     - mv coverage/ public/
   artifacts:
