@@ -3,10 +3,29 @@ before_script:
   - export _R_CHECK_CRAN_INCOMING_=FALSE
   - export _R_CHECK_FORCE_SUGGESTS_=TRUE
 
-alpine-r:
+build:
   stage: test
   image: conoria/alpine-r
   script:
     - Rscript -e 'devtools::install_deps(dependencies = TRUE)'
     - Rscript -e 'devtools::check()'
     - Rscript -e 'covr::package_coverage(type = "tests", quiet = FALSE)'
+    - Rscript -e 'covr::report(covr::package_coverage(), file = "index.html")'
+    - mkdir -p coverage && mv lib coverage/ && mv index.html coverage/
+  artifacts:
+    paths:
+      - coverage/
+
+pages:
+  stage: deploy
+  image: alpine
+  dependencies:
+    - build
+  script:
+    - mv coverage/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+  only:
+    - dev
