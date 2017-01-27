@@ -1,3 +1,6 @@
+variables:
+  CODECOV_TOKEN: "9289d1d1-b756-4ae7-a61c-fda4aff95c33"
+
 before_script:
   - export _R_CHECK_CRAN_INCOMING_=FALSE
   - export _R_CHECK_FORCE_SUGGESTS_=TRUE
@@ -11,6 +14,7 @@ r-base:
     - Rscript -e 'install.packages(c("devtools", "roxygen2", "testthat", "covr"), repos = "https://cran.rstudio.com/")'
     - Rscript -e 'devtools::install_deps()'
     - Rscript -e 'devtools::check()'
+    - Rscript -e 'covr::codecov(type = "all", quiet = FALSE)'
     - Rscript -e 'cov <- covr::package_coverage(type = "all", quiet = FALSE); covr::report(cov, file = "index.html"); cov'
     - mkdir -p coverage && mv lib coverage/ && mv index.html coverage/
   artifacts:
