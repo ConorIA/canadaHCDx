@@ -1,6 +1,3 @@
-variables:
-  CODECOV_TOKEN: "9289d1d1-b756-4ae7-a61c-fda4aff95c33"
-
 before_script:
   - export _R_CHECK_CRAN_INCOMING_=FALSE
   - export _R_CHECK_FORCE_SUGGESTS_=TRUE
