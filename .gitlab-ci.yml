@@ -15,6 +15,7 @@ r-base:
     - Rscript -e 'cov <- covr::package_coverage(type = "all", quiet = FALSE); covr::report(cov, file = "index.html"); cov'
     - mkdir -p coverage && mv lib coverage/ && mv index.html coverage/
   artifacts:
+    expire_in: 1 day
     paths:
       - coverage/
 
@@ -26,8 +27,8 @@ pages:
   script:
     - mv coverage/ public/
   artifacts:
+    expire_in: 30 days
     paths:
       - public
-    expire_in: 30 days
   only:
     - master
