@@ -12,7 +12,8 @@ city <- hcd_daily(5051, 1971:2000)
 yh <- hcd_daily(1707, 1981:2010)
 ```
 
-[![build status](https://gitlab.com/ConorIA/canadaHCDx/badges/master/build.svg)](https://gitlab.com/ConorIA/canadaHCDx/pipelines) [![Build status](https://ci.appveyor.com/api/projects/status/meb87c4uik14wcyj?svg=true)](https://ci.appveyor.com/project/ConorIA/canadahcdx) [![coverage report](https://gitlab.com/ConorIA/canadaHCDx/badges/master/coverage.svg)](https://conoria.gitlab.io/canadaHCDx/)
+[![build status](https://gitlab.com/ConorIA/canadaHCDx/badges/master/build.svg)](https://gitlab.com/ConorIA/canadaHCDx/pipelines) [![Build status](https://ci.appveyor.com/api/projects/status/meb87c4uik14wcyj?svg=true)](https://ci.appveyor.com/project/ConorIA/canadahcdx) [![codecov](https://codecov.io/gl/ConorIA/canadaHCDx/branch/master/graph/badge.svg)](https://codecov.io/gl/ConorIA/canadaHCDx)
+
 
 Environment and Climate Change Canada (ECCC) provides archival climate data for a [wealth of climate stations](ftp://client_climate@ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees/Station%20Inventory%20EN.csv) across the country. This data is available for download on the ECCC [data portal](http://climate.weather.gc.ca/). This website is useful for browsing data, and is convenient for downloading short periods of data. However, if you are seeking a 30-year baseline, the manual download of the necessary data can become very tedious. In that regard, ECCC also provides a bulk download function to make acquiring that data a little bit easier. While the process is much simpler than it has been in the past, one still must put in a little leg work to: 
 
