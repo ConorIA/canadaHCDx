@@ -15,41 +15,6 @@ r-base:
     - Rscript -e 'cov <- covr::package_coverage(type = "all", quiet = FALSE); covr::report(cov, file = "index.html"); cov'
     - mkdir -p coverage && mv lib coverage/ && mv index.html coverage/
   artifacts:
-    stages:
-  - build
-  - deploy
-
-build:
-  stage: build
-  image: conoria/apkbuilder-alpine
-  script:
-  - mkdir -p /home/maker/packages
-  - chown -R maker:abuild /home/maker/packages
-  - mkdir -p /keys
-  - cp 'conor@conr.ca-584aeee5.rsa.pub' /keys
-  - echo "${abuild_key}" > '/keys/conor@conr.ca-584aeee5.rsa'
-  - chown -R maker:abuild /keys
-  - ./pkg.sh
-  - mkdir -p $PWD/apks
-  - cp -R /home/maker/packages/alpine-pandoc/* $PWD/apks
-  artifacts:
-    expire_in: 1d
-    paths:
-    - apks
-
-pages:
-  stage: deploy
-  image: alpine
-  dependencies:
-    - build
-  script:
-    - mv apks/ public/
-  artifacts:
-    expire_in: 1 day
-    paths:
-      - public
-  only:
-    - master
     paths:
       - coverage/
 
@@ -61,8 +26,8 @@ pages:
   script:
     - mv coverage/ public/
   artifacts:
-    expire_in: 30 days
     paths:
       - public
+    expire_in: 30 days
   only:
     - master
