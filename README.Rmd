@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(canadaHCDx)
 city <- hcd_daily(5051, 1971:2000)
 yh <- hcd_daily(1707, 1981:2010)
+pears <- hcd_daily(5097, 1993)
 ```
 
 [![build status](https://gitlab.com/ConorIA/canadaHCDx/badges/master/build.svg)](https://gitlab.com/ConorIA/canadaHCDx/pipelines) [![Build status](https://ci.appveyor.com/api/projects/status/meb87c4uik14wcyj?svg=true)](https://ci.appveyor.com/project/ConorIA/canadahcdx) [![codecov](https://codecov.io/gl/ConorIA/canadaHCDx/branch/master/graph/badge.svg)](https://codecov.io/gl/ConorIA/canadaHCDx)
@@ -117,7 +118,7 @@ map_stations(find_station_adv(target = c(43.7860, -79.1873), dist = 10:20), zoom
 
 ## Quick audit
 
-The `quick_audit()` function will return a tibble of the proportion of missing values for a station. For now, it has only been tested with daily data. The following code will return the proportion of missing values at Yellowknife Hydro:
+The `quick_audit()` function will return a tibble listing the percentage or number of missing values for a station. For now, it has only been tested with daily data. The following code will return the percentage of missing values at Yellowknife Hydro:
 
 ```{r, eval = FALSE}
 yh <- hcd_daily(1707, 1981:2010)
@@ -126,13 +127,14 @@ yh <- hcd_daily(1707, 1981:2010)
 quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"))
 ```
 
-You can also summarize missing data by month using:
+Use `report = "n"` to show the _number_ of missing values. Use `by = "month"` to show missing data by month instead of year. To show the number of missing values at Toronto Pearson Airport in 1993:
 
-```{r}
-quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"), by = "month")
+```{r, eval = FALSE}
+pears <- hcd_daily(5097, 1993)
 ```
-
-Note that you can use `reverse = TRUE` as an argument to instead return the "completeness" of the data. 
+```{r}
+quick_audit(pears, "MeanTemp", by = "month", report = "n")
+```
 
 # Disclaimer
 

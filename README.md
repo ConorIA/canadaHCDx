@@ -231,7 +231,7 @@ map_stations(find_station_adv(target = c(43.7860, -79.1873), dist = 10:20), zoom
 
 ## Quick audit
 
-The `quick_audit()` function will return a tibble of the proportion of missing values for a station. For now, it has only been tested with daily data. The following code will return the proportion of missing values at Yellowknife Hydro:
+The `quick_audit()` function will return a tibble listing the percentage or number of missing values for a station. For now, it has only been tested with daily data. The following code will return the percentage of missing values at Yellowknife Hydro:
 
 
 ```r
@@ -244,46 +244,49 @@ quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"))
 
 ```
 ## # A tibble: 30 × 4
-##     Year    MaxTemp    MinTemp   MeanTemp
-##    <int>      <dbl>      <dbl>      <dbl>
-## 1   1981 0.08219178 0.08219178 0.08219178
-## 2   1982 0.08493151 0.08493151 0.08493151
-## 3   1983 0.00000000 0.00000000 0.00000000
-## 4   1984 0.00000000 0.00000000 0.00000000
-## 5   1985 0.33698630 0.33698630 0.33698630
-## 6   1986 0.33150685 0.33150685 0.33150685
-## 7   1987 0.08493151 0.08493151 0.08493151
-## 8   1988 0.50273224 0.50273224 0.50273224
-## 9   1989 1.00000000 1.00000000 1.00000000
-## 10  1990 0.08219178 0.08219178 0.08219178
+##     Year `MaxTemp pct NA` `MinTemp pct NA` `MeanTemp pct NA`
+##    <int>            <dbl>            <dbl>             <dbl>
+## 1   1981         8.219178         8.219178          8.219178
+## 2   1982         8.493151         8.493151          8.493151
+## 3   1983         0.000000         0.000000          0.000000
+## 4   1984         0.000000         0.000000          0.000000
+## 5   1985        33.698630        33.698630         33.698630
+## 6   1986        33.150685        33.150685         33.150685
+## 7   1987         8.493151         8.493151          8.493151
+## 8   1988        50.273224        50.273224         50.273224
+## 9   1989       100.000000       100.000000        100.000000
+## 10  1990         8.219178         8.219178          8.219178
 ## # ... with 20 more rows
 ```
 
-You can also summarize missing data by month using:
+Use `report = "n"` to show the _number_ of missing values. Use `by = "month"` to show missing data by month instead of year. To show the number of missing values at Toronto Pearson Airport in 1993:
 
 
 ```r
-quick_audit(yh, c("MaxTemp", "MinTemp", "MeanTemp"), by = "month")
+pears <- hcd_daily(5097, 1993)
+```
+
+```r
+quick_audit(pears, "MeanTemp", by = "month", report = "n")
 ```
 
 ```
-## # A tibble: 360 × 6
-##     Year Month  `Year-month` MaxTemp MinTemp MeanTemp
-##    <chr> <chr> <S3: yearmon>   <dbl>   <dbl>    <dbl>
-## 1   1981    01      Jan 1981       0       0        0
-## 2   1981    02      Feb 1981       0       0        0
-## 3   1981    03      Mar 1981       0       0        0
-## 4   1981    04      Apr 1981       0       0        0
-## 5   1981    05      May 1981       0       0        0
-## 6   1981    06      Jun 1981       0       0        0
-## 7   1981    07      Jul 1981       0       0        0
-## 8   1981    08      Aug 1981       0       0        0
-## 9   1981    09      Sep 1981       0       0        0
-## 10  1981    10      Oct 1981       0       0        0
-## # ... with 350 more rows
+## # A tibble: 12 × 5
+##     Year Month  `Year-month` `MeanTemp consec NA` `MeanTemp tot NA`
+##    <chr> <chr> <S3: yearmon>                <int>             <int>
+## 1   1993    01      Jan 1993                    1                 2
+## 2   1993    02      Feb 1993                    1                 2
+## 3   1993    03      Mar 1993                    1                 4
+## 4   1993    04      Apr 1993                    2                 7
+## 5   1993    05      May 1993                    1                 2
+## 6   1993    06      Jun 1993                    1                 2
+## 7   1993    07      Jul 1993                    1                 1
+## 8   1993    08      Aug 1993                    1                 1
+## 9   1993    09      Sep 1993                    4                10
+## 10  1993    10      Oct 1993                    2                10
+## 11  1993    11      Nov 1993                    3                 9
+## 12  1993    12      Dec 1993                    2                 5
 ```
-
-Note that you can use `reverse = TRUE` as an argument to instead return the "completeness" of the data. 
 
 # Disclaimer
 
