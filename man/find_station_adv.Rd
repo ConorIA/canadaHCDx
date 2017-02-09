@@ -5,8 +5,8 @@
 \title{Find a Historical Climate Data station (advanced)}
 \usage{
 find_station_adv(name = NULL, ignore.case = TRUE, glob = FALSE,
-  province = NULL, baseline = NULL, type = "daily", target = NULL,
-  dist = 0:100, sort = TRUE, ...)
+  province = NULL, baseline = NULL, type = "daily", duplicates = FALSE,
+  target = NULL, dist = 0:100, sort = TRUE, ...)
 }
 \arguments{
 \item{name}{character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.}
@@ -20,6 +20,8 @@ find_station_adv(name = NULL, ignore.case = TRUE, glob = FALSE,
 \item{baseline}{vector; optional vector with a start and end year for a desired baseline.}
 
 \item{type}{character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".}
+
+\item{duplicates}{Boolean; if TRUE, will attempt to provide combinations of stations (at the same coordinates) that provide enough baseline data.}
 
 \item{target}{numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).}
 

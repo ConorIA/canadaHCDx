@@ -8,6 +8,7 @@
 ##' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
 ##' @param baseline vector; optional vector with a start and end year for a desired baseline.
 ##' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
+##' @param duplicates Boolean; if TRUE, will attempt to provide combinations of stations (at the same coordinates) that provide enough baseline data.
 ##' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
 ##' @param dist numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)
 ##' @param sort Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.
@@ -33,7 +34,7 @@
 ##' find_station_adv(target = 5051, dist = 0:100)
 ##'
 
-`find_station_adv` <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", target = NULL, dist = 0:100, sort = TRUE, ...) {
+`find_station_adv` <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", duplicates = FALSE, target = NULL, dist = 0:100, sort = TRUE, ...) {
 
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
@@ -75,18 +76,6 @@
     }
   }
 
-  # If `baseline` is not NULL, filter by available data
-  if (!is.null(baseline)) {
-    index = NULL
-    # Identify all stations outside of our baseline
-    for (i in 1:nrow(df)) {
-      if (is.na(df[i,6]) | df[i,6] > baseline[1]) index <- c(index, i)
-      else if (is.na(df[i,7]) | df[i,7] < baseline[length(baseline)]) index <- c(index, i)
-    }
-    # Delete those stations
-    if (!is.null(index)) df <- df[-index,]
-  }
-
   # If `target` is not NULL, filter by distance to target
   if (!is.null(target)) {
     if (length(target) == 1L) {
@@ -102,6 +91,41 @@
     df <- df[(!is.na(df$Dist) & (df$Dist >= min(dist)) & (df$Dist <= max(dist))),]
     if (sort == TRUE) df <- df[order(df$Dist),]
   }
+
+  # If `baseline` is not NULL, filter by available data
+  if (!is.null(baseline)) {
+    index = NULL
+    # Identify all stations outside of our baseline
+    for (i in 1:nrow(df)) {
+      if (is.na(df[i,6]) | df[i,6] > baseline[1]) index <- c(index, i)
+      else if (is.na(df[i,7]) | df[i,7] < baseline[length(baseline)]) index <- c(index, i)
+    }
+
+    # Remind users that stations for which the ID has changed might not be detected
+    if (duplicates == TRUE) {
+      coords <- paste0(df$LatitudeDD, ", ", df$LongitudeDD)
+      coords <- unique(coords[duplicated(coords)])
+      printed <- NULL
+      for (coord in coords) {
+        dups <- df[paste0(df$LatitudeDD, ", ", df$LongitudeDD) == coord,]
+        if (sort == TRUE) dups <- dups[order(dups$StationID),]
+        if (!is.na(min(dups[6])) & min(dups[6]) <= baseline[1]  & !is.na(max(dups[7])) & max(dups[7] >= baseline[length(baseline)])) {
+          if (is.null(printed)) {
+            cat("Note: In addition to the stations found, the following combinations may provide sufficient baseline data.\n\n")
+            printed <- 1
+            combo <- 1
+          }
+          cat("## Combination", combo, "at coordinates", coord, "\n\n")
+          cat(paste0(dups$StationID, ": ", dups$Name, "\n"), "\n", sep = "")
+          combo <- combo + 1
+        }
+      }
+    }
+
+    # Delete those stations
+    if (!is.null(index)) df <- df[-index,]
+  }
+
   class(df) <- c("hcd_station_list", class(df))
   df
 }

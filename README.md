@@ -213,6 +213,39 @@ find_station_adv(target = c(43.7860, -79.1873), dist = 0:5)
 ## # ... with 2 more variables: LongitudeDD <dbl>, Dist <dbl>
 ```
 
+### Identify stations that have changed name and ID
+
+There have been a number of cases where the same station has changed name and ID over its history. In this case, filtering by baseline might exclude these stations. If you would like the `find_station_adv()` function to try to identify these cases, pass `duplicates = TRUE` to the function. The function will report any combination for which the coordinates are the same, and which, together, provide sufficient baseline data. 
+
+
+```r
+find_station_adv(baseline = 1981:2010, target = 5051, dist = 0:10, duplicates = TRUE)
+```
+
+```
+## Note: In addition to the stations found, the following combinations may provide sufficient baseline data.
+## 
+## ## Combination 1 at coordinates 43.67, -79.4 
+## 
+## 5051: TORONTO
+## 31688: TORONTO CITY
+## 
+## ## Combination 2 at coordinates 43.63, -79.4 
+## 
+## 5085: TORONTO ISLAND A
+## 5086: TORONTO IS A (AUT)
+## 30247: TORONTO CITY CENTRE
+## 48549: TORONTO CITY CENTRE
+```
+
+```
+## # A tibble: 1 × 8
+##      Name Province StationID LatitudeDD LongitudeDD DailyFirstYr
+##     <chr>    <chr>     <int>      <dbl>       <dbl>        <int>
+## 1 TORONTO  ONTARIO      5051      43.67       -79.4         1840
+## # ... with 2 more variables: DailyLastYr <int>, Dist <dbl>
+```
+
 ## Station search GUI
 
 Sometimes, no matter how versatile one's search function is, it is far easier to just mouse through a table and find the data that one needs. To make this "mousing" just a little easier, I have included a Shiny data table to help with navigating the list of stations. Call the table up by running `find_station_GUI()` with no arguments. 

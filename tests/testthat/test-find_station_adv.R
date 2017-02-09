@@ -14,7 +14,7 @@ test_that("find_station_adv() can locate a station by name regex", {
 
 ## test finding a station by baseline
 test_that("find_station_adv() can locate a station by baseline", {
-  df <- find_station_adv(baseline = 1840:2015)
+  df <- find_station_adv(baseline = 1840:2015, duplicates = TRUE)
   expect_that(df, is_a("hcd_station_list"))
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "1 obs")
