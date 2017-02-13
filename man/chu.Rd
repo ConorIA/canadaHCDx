@@ -4,7 +4,7 @@
 \alias{chu}
 \title{Calculate daily Ontario crop heat units for a given canadaHCD station}
 \source{
-http://www.omafra.gov.on.ca/english/crops/pub811/10using.htm
+\insertRef{omafra_staff_field_2011}{canadaHCDx}
 }
 \usage{
 chu(datain, report = c("chu", "gdd"), tbase = 0)

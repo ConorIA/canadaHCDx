@@ -11,8 +11,8 @@
 ##' @export
 ##'
 ##' @author Conor I. Anderson
-##' 
-##' @source http://www.omafra.gov.on.ca/english/crops/pub811/10using.htm
+##'
+##' @source \insertRef{omafra_staff_field_2011}{canadaHCDx}
 ##'
 ##' @examples
 ##'
@@ -26,33 +26,29 @@ chu <- function(datain, report = c("chu", "gdd"), tbase = 0) {
   if(!inherits(datain, "data.frame")) {
     stop("Input data must be a data frame")
   }
-  
+
   if (length(which(report == "chu")) == 0 && length(which(report == "gdd")) == 0) {
     stop("We can only calculate CHUs and GDDs. Please check your report argument.")
   }
-  
+
   tmax <- datain$MaxTemp
   tmin <- datain$MinTemp
   dataout <- datain
-  
-  
+
   if (length(which(report == "chu")) == 1) {
-    chu <- NULL
-    
-    for (i in 1:nrow(datain)) {
-      ymax = max(((3.33 * (tmax[i]-10)) - (0.084 * (tmax[i]-10.0)^2)),0)
-      ymin = max((1.8 * (tmin[i] - 4.4)),0)
-      chu <- c(chu, ((ymax + ymin)/2))
-    }
-    
+    ymax <- (3.33 * (tmax-10)) - (0.084 * (tmax-10.0)^2)
+    ymax[which(ymax < 0)] <- 0
+    ymin <- 1.8 * (tmin - 4.4)
+    ymin[which(ymin < 0)] <- 0
+    chu <- (ymax + ymin)/2
     dataout <- add_column(dataout, CHU = chu)
   }
-  
+
   if (length(which(report == "gdd")) == 1) {
     gdd <- (tmax + tmin)/2 - tbase
     gdd[which(gdd < 0)] <- 0
     dataout <- add_column(dataout, GDD = gdd)
   }
-  
+
   return(dataout)
 }

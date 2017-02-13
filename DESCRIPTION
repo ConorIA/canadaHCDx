@@ -2,7 +2,7 @@ Package: canadaHCDx
 Type: Package
 Title: Additional functions for the canadaHCD package
 Version: 0.0-1
-Date: 2017-01-15
+Date: 2017-02-13
 Authors@R: person(given = c("Conor", "I."), family = "Anderson",
     role = c("aut","cre"), email = "conor@conr.ca")
 Maintainer: Conor I. Anderson <conor@conr.ca>
@@ -22,6 +22,7 @@ Suggests:
     testthat,
     covr
 Remotes: github::gavinsimpson/canadaHCD
+RdMacros: Rdpack
 License: GPL-3
 URL: https://gitlab.com/ConorIA/canadaHCDx/
 BugReports: https://gitlab.com/ConorIA/canadaHCDx/issues
