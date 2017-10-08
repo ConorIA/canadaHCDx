@@ -49,11 +49,11 @@ test_that("find_station_adv() can locate a station by distance for coordinates",
 })
 
 ## find_station_adv should fail if we spell the province incorrectly
-test_that("find_station_adv() can locate a station by distance for coordinates", {
+test_that("find_station_adv() fails if provice is incorrect", {
   expect_error(find_station_adv(province = "Qwebek"), "No data found for that province. Did you spell it correctly?", fixed=TRUE)
 })
 
 ## find_station_adv should fail if we use a bad province code
-test_that("find_station_adv() can locate a station by distance for coordinates", {
+test_that("find_station_adv() fails if provice code is incorrect", {
   expect_error(find_station_adv(province = "NO"), "Incorrect province code provided.", fixed=TRUE)
 })
