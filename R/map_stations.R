@@ -14,12 +14,17 @@
 ##'
 ##' @examples
 ##' # Make a map of all the stations named "Yellowknife".
-##' map_stations(find_station_adv(name = "Yellowknife"))
+##' map_stations(find_station(name = "Yellowknife"))
 ##' # Make a map of all stations within 50km of Toronto Station 5051.
-##' map_stations(find_station_adv(target = 5051, dist = 0:50))
+##' map_stations(find_station(target = 5051, dist = 0:50))
 
 map_stations <- function(station, zoom) {
 
+  station_data <- try(get_station_data())
+  if(inherits(station_data, "try-error")) {
+    stop("We can't map the stations without more detailed data!")
+  }
+  
   if (inherits(station, "data.frame")) {
     station <- station$StationID
   }
