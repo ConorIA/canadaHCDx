@@ -1,6 +1,6 @@
 library("testthat")
 library("canadaHCDx")
-df <- find_station_adv("Yellowknife")
+df <- find_station("Yellowknife")
 
 context("Test `map_stations()`")
 

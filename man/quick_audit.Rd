@@ -31,4 +31,3 @@ quick_audit(city, "MaxTemp", by = "month", report = "n")
 \author{
 Conor I. Anderson
 }
-

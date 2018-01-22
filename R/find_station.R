@@ -12,6 +12,7 @@
 ##' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
 ##' @param dist numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)
 ##' @param sort Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.
+##' @param assume_yes Boolean; whether we should assume yes before downloading index from Environment and Climate Change Canada.
 ##' @param ... Additional arguments passed to \code{\link{grep}}.
 ##'
 ##' @return A \code{tbl_df}, containing details of any matching HCD stations.
@@ -25,17 +26,23 @@
 ##'
 ##' @examples
 ##' # Find all stations with names beginning in  "Reg".
-##' find_station_adv("Reg*", glob = TRUE)
+##' find_station("Reg*", glob = TRUE)
 ##'
 ##' # Find stations named "Yellowknife", with hourly data available from 1971 to 2000.
-##' find_station_adv("Yellowknife", baseline = c(1971, 2000), type = "hourly")
+##' find_station("Yellowknife", baseline = c(1971, 2000), type = "hourly")
 ##'
 ##' # Find all stations between 0 and 100 km from Station No. 5051.
-##' find_station_adv(target = 5051, dist = 0:100)
+##' find_station(target = 5051, dist = 0:100)
 ##'
 
-`find_station_adv` <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", duplicates = FALSE, target = NULL, dist = 0:100, sort = TRUE, ...) {
+find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", duplicates = FALSE, target = NULL, dist = 0:100, sort = TRUE, assume_yes = FALSE, ...) {
 
+  station_data <- try(get_station_data(assume_yes))
+  if(inherits(station_data, "try-error")) {
+    stop("We can't search without data to search through!")
+  }
+  
+  
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
     if (glob) {
