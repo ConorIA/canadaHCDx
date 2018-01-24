@@ -24,10 +24,10 @@
 
 chu <- function(datain, report = c("chu", "gdd"), tbase = 0) {
   if(!inherits(datain, "data.frame")) {
-    stop("Input data must be a data frame")
+    stop("Input data must be a data frame.")
   }
 
-  if (length(which(report == "chu")) == 0 && length(which(report == "gdd")) == 0) {
+  if (!(report %in% c("chu", "gdd"))) {
     stop("We can only calculate CHUs and GDDs. Please check your report argument.")
   }
 
@@ -35,7 +35,7 @@ chu <- function(datain, report = c("chu", "gdd"), tbase = 0) {
   tmin <- datain$MinTemp
   dataout <- datain
 
-  if (length(which(report == "chu")) == 1) {
+  if ("chu" %in% report) {
     ymax <- (3.33 * (tmax-10)) - (0.084 * (tmax-10.0)^2)
     ymax[which(ymax < 0)] <- 0
     ymin <- 1.8 * (tmin - 4.4)
@@ -44,7 +44,7 @@ chu <- function(datain, report = c("chu", "gdd"), tbase = 0) {
     dataout <- add_column(dataout, CHU = chu)
   }
 
-  if (length(which(report == "gdd")) == 1) {
+  if ("gdd" %in% report) {
     gdd <- (tmax + tmin)/2 - tbase
     gdd[which(gdd < 0)] <- 0
     dataout <- add_column(dataout, GDD = gdd)
