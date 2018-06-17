@@ -39,7 +39,8 @@ find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province
 
   station_data <- try(get_station_data(assume_yes))
   if(inherits(station_data, "try-error")) {
-    stop("We can't search without data to search through!")
+    warning("There is an issue with the FTP station data. Falling back to bundled canadaHCD data.")
+    station_data <- canadaHCD:::station_data
   }
   
   
