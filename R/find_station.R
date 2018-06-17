@@ -17,7 +17,10 @@
 ##'
 ##' @return A \code{tbl_df}, containing details of any matching HCD stations.
 ##'
+##' @importFrom dplyr all_vars arrange filter filter_at mutate rowwise select tally vars
 ##' @importFrom geosphere distGeo
+##' @importFrom magrittr %>%
+##' @importFrom tidyselect matches
 ##' @importFrom utils glob2rx
 ##'
 ##' @export
@@ -37,103 +40,96 @@
 
 find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", duplicates = FALSE, target = NULL, dist = 0:100, sort = TRUE, assume_yes = FALSE, ...) {
 
-  station_data <- try(get_station_data(assume_yes))
-  if(inherits(station_data, "try-error")) {
+  filt <- try(get_station_data(assume_yes))
+  if(inherits(filt, "try-error")) {
     warning("There is an issue with the FTP station data. Falling back to bundled canadaHCD data.")
-    station_data <- canadaHCD:::station_data
+    filt <- canadaHCD:::station_data
   }
   
-  
+  # These seem to be erroneous coords for 20 stations
+  filt$LatitudeDD[filt$LatitudeDD == 40] <- NA
+  filt$LongitudeDD[filt$LongitudeDD == -50] <- NA
+
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
     if (glob) {
       name <- glob2rx(name)
     }
-    take <- grep(name, station_data$Name, ignore.case = ignore.case, ...)
-  } else {
-    take <- 1:nrow(station_data)
+    filt <- filter(filt, grepl(name, Name, ignore.case = ignore.case, ...))
   }
 
+  # If `province` is not NULL, we will filter by province
+  if (!is.null(province)) {
+    p_codes <- c("AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT")
+    # Identify all stations outside of our baseline
+    if (all(nchar(province) == 2L)) {
+      if (!all(province %in% p_codes)) stop("Incorrect province code(s) provided.")
+      province <- levels(as.factor(filt$Province))[which(p_codes %in% toupper(province))]
+    }
+    if (!all(province %in% filt$Province)) stop("One or more province name(s) incorrect.")
+    filt <- filter(filt, toupper(Province) %in% toupper(province))
+    if (nrow(filt) == 0) {
+      stop("No data found for that province. Did you spell it correctly?")
+    }
+  }
+  
   # Next, set the data we are interested in, if necessary
   if (!is.null(baseline)) {
-    if (length(baseline) < 2 | baseline[1] > baseline[length(baseline)]) stop("error: check baseline format")
+    if (baseline[1] > baseline[length(baseline)]) stop("error: check baseline format")
     if (type == "hourly") data_vars <- c("HourlyFirstYr", "HourlyLastYr")
     if (type == "daily") data_vars <- c("DailyFirstYr", "DailyLastYr")
     if (type == "monthly") data_vars <- c("MonthlyFirstYr", "MonthlyLastYr")
   } else {
     data_vars <- NULL
   }
-
+  
   # Make a table with the info we want
   vars_wanted <- c("Name", "Province", "StationID", "LatitudeDD", "LongitudeDD", data_vars)
-  df <- station_data[take, vars_wanted]
-
-  # If `province` is not NULL, we will filter by province
-  if (!is.null(province)) {
-    # Identify all stations outside of our baseline
-    if (nchar(province) == 2L) {
-      province <- levels(as.factor(station_data$Province))[which(c("AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT") == province)]
-      if (length(province) == 0L) {
-        stop("Incorrect province code provided.")
-      }
-    }
-    province <- toupper(province)
-    df <- df[df$Province == province,]
-    if (nrow(df) == 0) {
-      stop("No data found for that province. Did you spell it correctly?")
-    }
-  }
-
+  filt <- select(filt, vars_wanted)
+  
   # If `target` is not NULL, filter by distance to target
   if (!is.null(target)) {
-    if (length(target) == 1L) {
-      p1 <- c(station_data$LongitudeDD[grep(paste0("\\b", as.character(target), "\\b"), station_data$StationID)], station_data$LatitudeDD[grep(paste0("\\b", as.character(target), "\\b"), station_data$StationID)])
-    }
-    else if (length(target) == 2L) {
-      p1 <- c(target[2], target[1])
-    } else stop("error: check target format")
-    df$Dist <- rep(NA, nrow(df))
-    for (j in 1:nrow(df)) {
-      df$Dist[j] <- (distGeo(p1, c(df$LongitudeDD[j], df$LatitudeDD[j]))/1000)
-    }
-    df <- df[(!is.na(df$Dist) & (df$Dist >= min(dist)) & (df$Dist <= max(dist))),]
-    if (sort == TRUE) df <- df[order(df$Dist),]
+    p1 <- switch(length(target),
+                 unlist(select(filter(filt, StationID == target), LongitudeDD, LatitudeDD)),
+                 c(target[2], target[1]))
+    if (length(p1) == 0) stop("No appropriate coordinates found. Check your target.")
+    filt <- rowwise(filt) %>%
+      mutate(Dist = distGeo(p1, c(LongitudeDD, LatitudeDD))/1000) %>%
+      filter(Dist >= min(dist) & Dist <= max(dist))
+    if (sort == TRUE) filt <- arrange(filt, Dist)
   }
-
+  
   # If `baseline` is not NULL, filter by available data
   if (!is.null(baseline)) {
-    index = NULL
-    # Identify all stations outside of our baseline
-    for (i in 1:nrow(df)) {
-      if (is.na(df[i,6]) | df[i,6] > baseline[1]) index <- c(index, i)
-      else if (is.na(df[i,7]) | df[i,7] < baseline[length(baseline)]) index <- c(index, i)
-    }
-
+    
+    inside <- filter_at(filt, vars(matches(data_vars[1])), all_vars(. <= min(baseline))) %>%
+      filter_at(vars(matches(data_vars[2])), all_vars(. >= max(baseline)))
+    
+    # Keep a record of the stations that are outside of our baseline
+    outside <- filter(filt, !(StationID %in% inside$StationID))
+    filt <- inside
+    
     # Remind users that stations for which the ID has changed might not be detected
     if (duplicates == TRUE) {
-      coords <- paste0(df$LatitudeDD, ", ", df$LongitudeDD)
-      coords <- unique(coords[duplicated(coords)])
+      coords <- outside %>% group_by(LatitudeDD, LongitudeDD) %>% tally %>% filter(n > 1)
       printed <- NULL
-      for (coord in coords) {
-        dups <- df[paste0(df$LatitudeDD, ", ", df$LongitudeDD) == coord,]
-        if (sort == TRUE) dups <- dups[order(dups$StationID),]
-        if (!is.na(min(dups[6])) & min(dups[6]) <= baseline[1]  & !is.na(max(dups[7])) & max(dups[7] >= baseline[length(baseline)])) {
+      for (rw in 1:nrow(coords)) {
+        dups <- filter(outside, LatitudeDD == coords$LatitudeDD[rw] & LongitudeDD == coords$LongitudeDD[rw])
+        if (isTRUE(sort)) dups <- arrange(dups, StationID)
+        if (!is.na(min(dups[6])) & min(dups[6]) <= min(baseline) & !is.na(max(dups[7])) & max(dups[7] >= max(baseline))) {
           if (is.null(printed)) {
             cat("Note: In addition to the stations found, the following combinations may provide sufficient baseline data.\n\n")
             printed <- 1
             combo <- 1
           }
-          cat("## Combination", combo, "at coordinates", coord, "\n\n")
+          cat("## Combination", combo, "at coordinates", coords$LatitudeDD[rw], coords$LongitudeDD[rw],"\n\n")
           cat(paste0(dups$StationID, ": ", dups$Name, "\n"), "\n", sep = "")
           combo <- combo + 1
         }
       }
     }
-
-    # Delete those stations
-    if (!is.null(index)) df <- df[-index,]
   }
 
-  class(df) <- c("hcd_station_list", class(df))
-  df
+  class(filt) <- c("hcd_station_list", class(filt))
+  filt
 }

@@ -15,12 +15,15 @@ Depends:
     canadaHCD
 Imports:
     curl,
+    dplyr,
     geosphere,
     leaflet,
+    magrittr,
     rappdirs,
     readr,
     storr,
     tibble,
+    tidyselect,
     zoo
 Suggests: 
     Rdpack,
