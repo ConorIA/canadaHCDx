@@ -4,12 +4,14 @@
 \alias{map_stations}
 \title{Map canadaHCD stations on an interactive map}
 \usage{
-map_stations(station, zoom)
+map_stations(station, zoom, type = "osm")
 }
 \arguments{
-\item{station}{character; one or more station ID numbers to show on the map.}
+\item{station}{character; one or more station ID numbers to show on the map, or a table output by \code{\link{find_station}}.}
 
 \item{zoom}{numeric; the level to zoom the map to.}
+
+\item{type}{character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\url{https://s2maps.eu}).}
 }
 \description{
 Show the stations of interest on an interactive map using Leaflet. Zoom levels are guessed based on an RStudio plot window.

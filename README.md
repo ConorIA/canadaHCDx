@@ -45,18 +45,18 @@ find_station("Toronto")
 
 ```
 ## # A tibble: 93 x 5
-##    Name                                    Province StationID Latit… Long…
-##    <chr>                                   <chr>        <int>  <dbl> <dbl>
-##  1 PA TORONTO INTERNATIONAL TRAP AND SKEET ONTARIO      52731   44.2 -79.7
-##  2 PA TORONTO NORTH YORK MOTORS            ONTARIO      52678   43.7 -79.5
-##  3 PA SCARBOROUGH TORONTO HUNT             ONTARIO      52641   43.7 -79.3
-##  4 PA TORONTO HYUNDAI                      ONTARIO      52640   43.7 -79.4
-##  5 TORONTO                                 ONTARIO       5051   43.7 -79.4
-##  6 TORONTO CITY                            ONTARIO      31688   43.7 -79.4
-##  7 TORONTO CITY CENTRE                     ONTARIO      48549   43.6 -79.4
-##  8 TORONTO AGINCOURT                       ONTARIO       5052   43.8 -79.3
-##  9 TORONTO ASHBRIDGES BAY                  ONTARIO       5053   43.7 -79.3
-## 10 TORONTO BALMY BEACH                     ONTARIO       5054   43.7 -79.3
+##    Name                          Province StationID LatitudeDD LongitudeDD
+##    <chr>                         <chr>        <int>      <dbl>       <dbl>
+##  1 PA TORONTO INTERNATIONAL TRA… ONTARIO      52731       44.2       -79.7
+##  2 PA TORONTO NORTH YORK MOTORS  ONTARIO      52678       43.7       -79.5
+##  3 PA SCARBOROUGH TORONTO HUNT   ONTARIO      52641       43.7       -79.3
+##  4 PA TORONTO HYUNDAI            ONTARIO      52640       43.7       -79.4
+##  5 TORONTO                       ONTARIO       5051       43.7       -79.4
+##  6 TORONTO CITY                  ONTARIO      31688       43.7       -79.4
+##  7 TORONTO CITY CENTRE           ONTARIO      48549       43.6       -79.4
+##  8 TORONTO AGINCOURT             ONTARIO       5052       43.8       -79.3
+##  9 TORONTO ASHBRIDGES BAY        ONTARIO       5053       43.7       -79.3
+## 10 TORONTO BALMY BEACH           ONTARIO       5054       43.7       -79.3
 ## # ... with 83 more rows
 ```
 
@@ -73,16 +73,16 @@ find_station("Tor*", glob = TRUE)
 ## # A tibble: 94 x 5
 ##    Name                   Province     StationID LatitudeDD LongitudeDD
 ##    <chr>                  <chr>            <int>      <dbl>       <dbl>
-##  1 TORRENS LO             ALBERTA           2440       54.3      -120  
-##  2 TORQUAY                SASKATCHEWAN      3034       49.1      -104  
-##  3 TORONTO                ONTARIO           5051       43.7      - 79.4
-##  4 TORONTO CITY           ONTARIO          31688       43.7      - 79.4
-##  5 TORONTO CITY CENTRE    ONTARIO          48549       43.6      - 79.4
-##  6 TORONTO AGINCOURT      ONTARIO           5052       43.8      - 79.3
-##  7 TORONTO ASHBRIDGES BAY ONTARIO           5053       43.7      - 79.3
-##  8 TORONTO BALMY BEACH    ONTARIO           5054       43.7      - 79.3
-##  9 TORONTO BEACON ROAD    ONTARIO           5055       43.8      - 79.3
-## 10 TORONTO BERMONDSEY     ONTARIO           5056       43.7      - 79.3
+##  1 TORRENS LO             ALBERTA           2440       54.3      -120. 
+##  2 TORQUAY                SASKATCHEWAN      3034       49.1      -104. 
+##  3 TORONTO                ONTARIO           5051       43.7       -79.4
+##  4 TORONTO CITY           ONTARIO          31688       43.7       -79.4
+##  5 TORONTO CITY CENTRE    ONTARIO          48549       43.6       -79.4
+##  6 TORONTO AGINCOURT      ONTARIO           5052       43.8       -79.3
+##  7 TORONTO ASHBRIDGES BAY ONTARIO           5053       43.7       -79.3
+##  8 TORONTO BALMY BEACH    ONTARIO           5054       43.7       -79.3
+##  9 TORONTO BEACON ROAD    ONTARIO           5055       43.8       -79.3
+## 10 TORONTO BERMONDSEY     ONTARIO           5056       43.7       -79.3
 ## # ... with 84 more rows
 ```
 
@@ -103,19 +103,20 @@ city
 
 ```
 ## # A tibble: 10,958 x 13
-##    Stati… Date       MaxTemp MinTemp MeanTe… Heat… Cool… Tota… Tota… Tota…
-##     <int> <date>       <dbl>   <dbl>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-##  1   5051 1971-01-01  -0.600 -10.0    - 5.30  23.3     0 0     0     0.300
-##  2   5051 1971-01-02   3.30  - 8.90   - 2.80  20.8     0 0     0     0    
-##  3   5051 1971-01-03   2.20    0        1.10  16.9     0 0.800 2.80  5.60 
-##  4   5051 1971-01-04   6.70  - 0.600    3.10  14.9     0 5.30  0     5.30 
-##  5   5051 1971-01-05  -0.600 - 3.30   - 2.00  20.0     0 0     0     0    
-##  6   5051 1971-01-06  -4.40  - 8.90   - 6.70  24.7     0 0     0     0    
-##  7   5051 1971-01-07  -5.60  -11.7    - 8.70  26.7     0 0     0     0    
-##  8   5051 1971-01-08  -6.10  -13.9    -10.0   28.0     0 0     2.30  2.30 
-##  9   5051 1971-01-09  -1.10  - 8.30   - 4.70  22.7     0 0     0.300 0.300
-## 10   5051 1971-01-10   0.600 - 5.60   - 2.50  20.5     0 0     0     0    
-## # ... with 10,948 more rows, and 3 more variables: GroundSnow <int>,
+##    Station Date       MaxTemp MinTemp MeanTemp HeatDegDays CoolDegDays
+##      <int> <date>       <dbl>   <dbl>    <dbl>       <dbl>       <dbl>
+##  1    5051 1971-01-01    -0.6   -10       -5.3        23.3           0
+##  2    5051 1971-01-02     3.3    -8.9     -2.8        20.8           0
+##  3    5051 1971-01-03     2.2     0        1.1        16.9           0
+##  4    5051 1971-01-04     6.7    -0.6      3.1        14.9           0
+##  5    5051 1971-01-05    -0.6    -3.3     -2          20             0
+##  6    5051 1971-01-06    -4.4    -8.9     -6.7        24.7           0
+##  7    5051 1971-01-07    -5.6   -11.7     -8.7        26.7           0
+##  8    5051 1971-01-08    -6.1   -13.9    -10          28             0
+##  9    5051 1971-01-09    -1.1    -8.3     -4.7        22.7           0
+## 10    5051 1971-01-10     0.6    -5.6     -2.5        20.5           0
+## # ... with 10,948 more rows, and 6 more variables: TotalRain <dbl>,
+## #   TotalSnow <dbl>, TotalPrecip <dbl>, GroundSnow <int>,
 ## #   MaxGustDir <int>, MaxGustSpeed <chr>
 ```
 
@@ -128,7 +129,7 @@ Users of the `canadaHCD` package can largely avoid using the Environment and Cli
 
 ## Caching and maintaining a list of stations
 
-This package will download the official Environment and Climate Change Canada [station inventory table](ftp://ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees/). This means that changes to station codes or the like won't leave you scratching your head. The inventory in the main `canadaHCD` package, on the other hand, hasn't been updated in some time.
+This package will download the official Environment and Climate Change Canada [station inventory table](ftp://client_climate@ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees). This means that changes to station codes or the like won't leave you scratching your head. The inventory in the main `canadaHCD` package, on the other hand, hasn't been updated in some time. To cache the latest data manually, run `get_station_data()`.
 
 ## Advanced search
 
@@ -156,6 +157,9 @@ find_station(province = "ON")
 ## 10 EAR FALLS (AUT)       ONTARIO      27865       50.6       -93.2
 ## # ... with 1,616 more rows
 ```
+
+_Note: You can use a vector of more than on province, e.g. `province = c("ON", "QC")`._
+
 ### Find stations named "Toronto", with hourly data available from 1971 to 2000
 
 ```r
@@ -164,10 +168,11 @@ find_station("Toronto", baseline = 1971:2000, type = "hourly")
 
 ```
 ## # A tibble: 2 x 7
-##   Name                              Province Stat… Lati… Long… Hour… Hour…
-##   <chr>                             <chr>    <int> <dbl> <dbl> <int> <int>
-## 1 TORONTO ISLAND A                  ONTARIO   5085  43.6 -79.4  1957  2006
-## 2 TORONTO LESTER B. PEARSON INT'L A ONTARIO   5097  43.7 -79.6  1953  2013
+##   Name             Province StationID LatitudeDD LongitudeDD HourlyFirstYr
+##   <chr>            <chr>        <int>      <dbl>       <dbl>         <int>
+## 1 TORONTO ISLAND A ONTARIO       5085       43.6       -79.4          1957
+## 2 TORONTO LESTER … ONTARIO       5097       43.7       -79.6          1953
+## # ... with 1 more variable: HourlyLastYr <int>
 ```
 ### Find all stations between 0 and 100 km from Station No. 5051
 
@@ -177,18 +182,18 @@ find_station(target = 5051, dist = 0:100)
 
 ```
 ## # A tibble: 506 x 6
-##    Name                           Province StationID Latitu… Longit…  Dist
-##    <chr>                          <chr>        <int>   <dbl>   <dbl> <dbl>
-##  1 TORONTO                        ONTARIO       5051    43.7   -79.4  0   
-##  2 TORONTO CITY                   ONTARIO      31688    43.7   -79.4  0   
-##  3 TORONTO DEER PARK              ONTARIO       5065    43.7   -79.4  1.96
-##  4 PA MATTAMY ATHLETIC CENTRE     ONTARIO      52723    43.7   -79.4  1.96
-##  5 TORONTO SHERBOURNE             ONTARIO       5089    43.6   -79.4  3.29
-##  6 PA DUFFERIN AND ST. CLAIR CIBC ONTARIO      53838    43.7   -79.4  3.41
-##  7 TORONTO BROADVIEW              ONTARIO       5063    43.7   -79.4  4.03
-##  8 TORONTO LEASIDE S              ONTARIO       5095    43.7   -79.4  4.12
-##  9 TORONTO NORTHCLIFFE            ONTARIO       5108    43.7   -79.4  4.18
-## 10 TORONTO CITY CENTRE            ONTARIO      48549    43.6   -79.4  4.44
+##    Name                    Province StationID LatitudeDD LongitudeDD  Dist
+##    <chr>                   <chr>        <int>      <dbl>       <dbl> <dbl>
+##  1 TORONTO                 ONTARIO       5051       43.7       -79.4  0   
+##  2 TORONTO CITY            ONTARIO      31688       43.7       -79.4  0   
+##  3 TORONTO DEER PARK       ONTARIO       5065       43.7       -79.4  1.96
+##  4 PA MATTAMY ATHLETIC CE… ONTARIO      52723       43.7       -79.4  1.96
+##  5 TORONTO SHERBOURNE      ONTARIO       5089       43.6       -79.4  3.29
+##  6 PA DUFFERIN AND ST. CL… ONTARIO      53838       43.7       -79.4  3.41
+##  7 TORONTO BROADVIEW       ONTARIO       5063       43.7       -79.4  4.03
+##  8 TORONTO LEASIDE S       ONTARIO       5095       43.7       -79.4  4.12
+##  9 TORONTO NORTHCLIFFE     ONTARIO       5108       43.7       -79.4  4.18
+## 10 TORONTO CITY CENTRE     ONTARIO      48549       43.6       -79.4  4.44
 ## # ... with 496 more rows
 ```
 ### Find all stations that are within 5 km of UTSC campus
@@ -199,16 +204,16 @@ find_station(target = c(43.7860, -79.1873), dist = 0:5)
 
 ```
 ## # A tibble: 8 x 6
-##   Name                                Province StationID Lati… Long…  Dist
-##   <chr>                               <chr>        <int> <dbl> <dbl> <dbl>
-## 1 PA U OF T SCARBOROUGH TENNIS CENTRE ONTARIO      52724  43.8 -79.2 0.701
-## 2 TOR SCARBOROUGH COLLEGE             ONTARIO       5091  43.8 -79.2 0.889
-## 3 TORONTO HIGHLAND CREEK              ONTARIO       5080  43.8 -79.2 1.54 
-## 4 TORONTO WEST HILL                   ONTARIO       5120  43.8 -79.2 2.26 
-## 5 TORONTO MALVERN                     ONTARIO       5099  43.8 -79.2 3.77 
-## 6 TORONTO METRO ZOO                   ONTARIO       5102  43.8 -79.2 3.82 
-## 7 TORONTO CURRAN HALL                 ONTARIO       5064  43.8 -79.2 4.13 
-## 8 ROUGE HILLS                         ONTARIO       5024  43.8 -79.1 4.87
+##   Name                     Province StationID LatitudeDD LongitudeDD  Dist
+##   <chr>                    <chr>        <int>      <dbl>       <dbl> <dbl>
+## 1 PA U OF T SCARBOROUGH T… ONTARIO      52724       43.8       -79.2 0.701
+## 2 TOR SCARBOROUGH COLLEGE  ONTARIO       5091       43.8       -79.2 0.889
+## 3 TORONTO HIGHLAND CREEK   ONTARIO       5080       43.8       -79.2 1.54 
+## 4 TORONTO WEST HILL        ONTARIO       5120       43.8       -79.2 2.26 
+## 5 TORONTO MALVERN          ONTARIO       5099       43.8       -79.2 3.77 
+## 6 TORONTO METRO ZOO        ONTARIO       5102       43.8       -79.2 3.82 
+## 7 TORONTO CURRAN HALL      ONTARIO       5064       43.8       -79.2 4.13 
+## 8 ROUGE HILLS              ONTARIO       5024       43.8       -79.1 4.87
 ```
 
 ### Identify stations that have changed name and ID
@@ -223,12 +228,7 @@ find_station(baseline = 1981:2010, target = 5051, dist = 0:10, duplicates = TRUE
 ```
 ## Note: In addition to the stations found, the following combinations may provide sufficient baseline data.
 ## 
-## ## Combination 1 at coordinates 43.67, -79.4 
-## 
-## 5051: TORONTO
-## 31688: TORONTO CITY
-## 
-## ## Combination 2 at coordinates 43.63, -79.4 
+## ## Combination 1 at coordinates 43.63 -79.4 
 ## 
 ## 5085: TORONTO ISLAND A
 ## 5086: TORONTO IS A (AUT)
@@ -238,9 +238,10 @@ find_station(baseline = 1981:2010, target = 5051, dist = 0:10, duplicates = TRUE
 
 ```
 ## # A tibble: 1 x 8
-##   Name    Province StationID LatitudeDD LongitudeDD DailyFi… DailyL…  Dist
-##   <chr>   <chr>        <int>      <dbl>       <dbl>    <int>   <int> <dbl>
-## 1 TORONTO ONTARIO       5051       43.7       -79.4     1840    2017     0
+##   Name  Province StationID LatitudeDD LongitudeDD DailyFirstYr DailyLastYr
+##   <chr> <chr>        <int>      <dbl>       <dbl>        <int>       <int>
+## 1 TORO… ONTARIO       5051       43.7       -79.4         1840        2017
+## # ... with 1 more variable: Dist <dbl>
 ```
 
 ## Map function
@@ -252,6 +253,8 @@ Sometimes a long list of stations is hard to visualize spatially. To overcome th
 ```r
 map_stations(find_station(target = c(43.7860, -79.1873), dist = 10:20), zoom = 6)
 ```
+
+_Note: use `type = "sentinel"` for cloudless satellite imagery from [EOX IT Services GmbH](https://s2maps.eu)._
 
 ## Quick audit
 

@@ -2,11 +2,21 @@
 % Please edit documentation in R/get_station_data.R
 \name{get_station_data}
 \alias{get_station_data}
-\title{Get latest Environment and Climate Change Canada Station Data}
+\title{Get latest Environment and Climate Change Canada Station Data
+  
+Downloads and caches the latest 'Station Inventory EN.csv' file from ECCC's public FTP site.}
 \usage{
-get_station_data(assume_yes = FALSE)
+get_station_data(assume_yes = FALSE, retry_time, quiet = FALSE)
+}
+\arguments{
+\item{assume_yes}{Boolean; do you want to assume yes to data updates?}
+
+\item{retry_time}{integer; the number of seconds after which to retry updates. These are set internally to 86400 (24 hours) for successful checks, 900 (15 minutes) for erroneous checks.}
+
+\item{quiet}{Boolean; should we print messages about whether or not we retried an update check (used when used internally by \code{\link{find_station}}.)}
 }
 \description{
 Get latest Environment and Climate Change Canada Station Data
+  
+Downloads and caches the latest 'Station Inventory EN.csv' file from ECCC's public FTP site.
 }
-\keyword{internal}

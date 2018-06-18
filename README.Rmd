@@ -82,7 +82,7 @@ Users of the `canadaHCD` package can largely avoid using the Environment and Cli
 
 ## Caching and maintaining a list of stations
 
-This package will download the official Environment and Climate Change Canada [station inventory table](ftp://ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees/). This means that changes to station codes or the like won't leave you scratching your head. The inventory in the main `canadaHCD` package, on the other hand, hasn't been updated in some time.
+This package will download the official Environment and Climate Change Canada [station inventory table](ftp://client_climate@ftp.tor.ec.gc.ca/Pub/Get_More_Data_Plus_de_donnees). This means that changes to station codes or the like won't leave you scratching your head. The inventory in the main `canadaHCD` package, on the other hand, hasn't been updated in some time. To cache the latest data manually, run `get_station_data()`.
 
 ## Advanced search
 
@@ -92,6 +92,9 @@ This packages masks `find_station()` from `canadaHCD` with a version that includ
 ```{r}
 find_station(province = "ON")
 ```
+
+_Note: You can use a vector of more than on province, e.g. `province = c("ON", "QC")`._
+
 ### Find stations named "Toronto", with hourly data available from 1971 to 2000
 ```{r}
 find_station("Toronto", baseline = 1971:2000, type = "hourly")
@@ -121,6 +124,8 @@ Sometimes a long list of stations is hard to visualize spatially. To overcome th
 ```{r, eval = FALSE}
 map_stations(find_station(target = c(43.7860, -79.1873), dist = 10:20), zoom = 6)
 ```
+
+_Note: use `type = "sentinel"` for cloudless satellite imagery from [EOX IT Services GmbH](https://s2maps.eu)._
 
 ## Quick audit
 

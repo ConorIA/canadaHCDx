@@ -1,14 +1,22 @@
 #' Get latest Environment and Climate Change Canada Station Data
+#'   
+#' Downloads and caches the latest 'Station Inventory EN.csv' file from ECCC's public FTP site.
 #' 
+#' @param assume_yes Boolean; do you want to assume yes to data updates?
+#' @param retry_time integer; the number of seconds after which to retry updates. These are set internally to 86400 (24 hours) for successful checks, 900 (15 minutes) for erroneous checks.
+#' @param quiet Boolean; should we print messages about whether or not we retried an update check (used when used internally by \code{\link{find_station}}.)
+#'
 #' @importFrom curl curl curl_download
 #' @importFrom rappdirs user_cache_dir
 #' @importFrom readr read_csv read_lines
 #' @importFrom storr storr_rds
 #'
-#' @keywords internal
-#'
+#' @export
 
-get_station_data <- function(assume_yes = FALSE) {
+get_station_data <- function(assume_yes = FALSE, retry_time, quiet = FALSE) {
+  
+  on.exit(st$set("retry_time", retry_time))
+  on.exit(st$set("retry_msg", retry_msg), add = TRUE)
   
   fetch_station_data <- function(key, namespace) {
     tab <- file.path("ftp://client_climate@ftp.tor.ec.gc.ca",
@@ -77,20 +85,47 @@ get_station_data <- function(assume_yes = FALSE) {
   cache_dir <- user_cache_dir("canadaHCDx")
   st <- storr_rds(cache_dir)
   
+  if (missing(retry_time)) retry_time <- ifelse(st$exists("retry_time"), st$get("retry_time"), 0)
+  retry_msg <- ifelse(st$exists("retry_msg"), st$get("retry_msg"), "")
+  
+  # Avoid checking for update every run.
+  if (st$exists("last_query") && st$get("last_query") >= Sys.time() - retry_time) {
+    st$set("last_query", Sys.time())
+    if (st$exists("station_data")) {
+      if(!quiet) print(retry_msg)
+      return(st$get("station_data"))
+    } else {
+      warning(paste("We can't download data, but none exists in the cache.",
+                    retry_msg, "Falling back to built-in data.frame."))
+      return(station_data_fallback)
+    }
+  } else {
+    st$set("last_query", Sys.time())
+  }
+  
   tab_attrs <- try(fetch_table_attributes(), silent = TRUE)
   if (inherits(tab_attrs, "try-error")) {
-    stop(paste("We cannot connect to Environment Canada's FTP site:",
+    retry_time <- 900
+    retry_msg <- "An error occured during our update check. We will try again within 15 minutes."
+    if (st$exists("station_data")) {
+      if(!quiet) print(retry_msg)
+      return(st$get("station_data")) 
+    } else {
+      stop(paste("We cannot connect to Environment Canada's FTP site:",
                attr(tab_attrs, "condition")))
+    }
   } else {
   
     if (!st$exists("station_data")) {
-      print(paste0(">>> We don't have a local copy of the station data index ",
+      print(paste0(">>> We don't have a fresh local copy of the station data index ",
                    "from Environment and Climate Change Canada. Do you want to ",
                    "download this data now? (", tab_attrs$size, ")"))
       if (assume_yes || !(readline(">>> Proceed? (Y/n) ") %in% c("n", "N"))) {
         cache_station_data(tab_attrs$mod_time)
       } else {
-        stop("No data to search through.")
+        retry_time <- 0
+        warning("Falling back to built-in data.frame.")
+        return(station_data_fallback)
       }
     } else {
       cached_mod <- st$get("last_mod")
@@ -104,6 +139,9 @@ get_station_data <- function(assume_yes = FALSE) {
       }
     }
   
+    retry_time <- 86400
+    retry_msg <- "Using cached data. Updates are checked daily. Override with `retry_time = 0`."
+    
     st$get("station_data")
   }
 }
