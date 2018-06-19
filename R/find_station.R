@@ -1,61 +1,65 @@
-##' @title Find a Historical Climate Data station (advanced)
-##'
-##' @description Search for stations in the Historical Climate Data inventory name, available data, and/or distance to a target.
-##'
-##' @param name character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.
-##' @param ignore.case logical; by default the search for station names is not case-sensitive.
-##' @param glob logical; use wildcards in station name as detailed in \code{link{glob2rx}}.
-##' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
-##' @param baseline vector; optional vector with a start and end year for a desired baseline.
-##' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
-##' @param duplicates Boolean; if TRUE, will attempt to provide combinations of stations (at the same coordinates) that provide enough baseline data.
-##' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
-##' @param dist numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)
-##' @param sort Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.
-##' @param assume_yes Boolean; whether we should assume yes before downloading index from Environment and Climate Change Canada.
-##' @param ... Additional arguments passed to \code{\link{grep}}.
-##'
-##' @return A \code{tbl_df}, containing details of any matching HCD stations.
-##'
-##' @importFrom dplyr "%>%" all_vars arrange filter filter_at group_by matches mutate rowwise select tally vars
-##' @importFrom geosphere distGeo
-##' @importFrom rlang .data
-##' @importFrom utils glob2rx
-##'
-##' @export
-##'
-##' @author Conor I. Anderson
-##'
-##' @examples
-##' # Find all stations with names beginning in  "Reg".
-##' find_station("Reg*", glob = TRUE)
-##'
-##' # Find stations named "Yellowknife", with hourly data available from 1971 to 2000.
-##' find_station("Yellowknife", baseline = c(1971, 2000), type = "hourly")
-##'
-##' # Find all stations between 0 and 100 km from Station No. 5051.
-##' find_station(target = 5051, dist = 0:100)
-##'
+#' @title Find a Historical Climate Data station (advanced)
+#'
+#' @description Search for stations in the Historical Climate Data inventory name, available data, and/or distance to a target.
+#'
+#' @param name character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.
+#' @param ignore.case logical; by default the search for station names is not case-sensitive.
+#' @param glob logical; use wildcards in station name as detailed in \code{link{glob2rx}}.
+#' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
+#' @param baseline vector; optional vector with a start and end year for a desired baseline.
+#' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
+#' @param duplicates Boolean; if TRUE, will attempt to provide combinations of stations (at the same coordinates) that provide enough baseline data.
+#' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
+#' @param dist numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)
+#' @param sort Boolean; if TRUE (default), will sort the resultant table by distance from `target`. Only used if a target is specified.
+#' @param assume_yes Boolean; whether we should assume yes before downloading index from Environment and Climate Change Canada.
+#' @param ... Additional arguments passed to \code{\link{grep}}.
+#'
+#' @return A \code{tbl_df}, containing details of any matching HCD stations.
+#'
+#' @importFrom dplyr "%>%" all_vars arrange filter filter_at group_by matches mutate rowwise select tally vars
+#' @importFrom geosphere distGeo
+#' @importFrom rlang .data
+#' @importFrom utils glob2rx
+#'
+#' @export
+#'
+#' @author Conor I. Anderson
+#'
+#' @examples
+#' # Find all stations with names beginning in  "Reg".
+#' find_station("Reg*", glob = TRUE)
+#'
+#' # Find stations named "Yellowknife", with hourly data available from 1971 to 2000.
+#' find_station("Yellowknife", baseline = c(1971, 2000), type = "hourly")
+#'
+#' # Find all stations between 0 and 100 km from Station No. 5051.
+#' find_station(target = 5051, dist = 0:100)
 
-find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province = NULL, baseline = NULL, type = "daily", duplicates = FALSE, target = NULL, dist = 0:100, sort = TRUE, assume_yes = FALSE, ...) {
+find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE,
+                         province = NULL, baseline = NULL, type = "daily",
+                         duplicates = FALSE, target = NULL, dist = 0:100,
+                         sort = TRUE, assume_yes = FALSE, ...) {
 
   filt <- get_station_data(assume_yes, quiet = TRUE)
   
   # These seem to be erroneous coords for 20 stations
   filt$LatitudeDD[filt$LatitudeDD == 40] <- NA
   filt$LongitudeDD[filt$LongitudeDD == -50] <- NA
-
+  
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
     if (glob) {
       name <- glob2rx(name)
     }
-    filt <- filter(filt, grepl(name, .data$Name, ignore.case = ignore.case, ...))
+    filt <- filter(filt, grepl(name, .data$Name,
+                               ignore.case = ignore.case, ...))
   }
-
+  
   # If `province` is not NULL, we will filter by province
   if (!is.null(province)) {
-    p_codes <- c("AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT")
+    p_codes <- c("AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE",
+                 "QC", "SK", "YT")
     # Identify all stations outside of our baseline
     if (all(nchar(province) == 2L)) {
       if (!all(province %in% p_codes)) stop("Incorrect province code(s) provided.")
@@ -89,7 +93,7 @@ find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province
                  c(target[2], target[1]))
     if (length(p1) == 0) stop("No appropriate coordinates found. Check your target.")
     filt <- rowwise(filt) %>%
-      mutate(Dist = distGeo(p1, c(.data$LongitudeDD, .data$LatitudeDD))/1000) %>%
+      mutate(Dist = distGeo(p1, c(.data$LongitudeDD, .data$LatitudeDD)) / 1000) %>%
       filter(.data$Dist >= min(dist) & .data$Dist <= max(dist))
     if (sort == TRUE) filt <- arrange(filt, .data$Dist)
     attr(filt, "target_lon") <- p1[1]
@@ -115,18 +119,20 @@ find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE, province
         if (isTRUE(sort)) dups <- arrange(dups, .data$StationID)
         if (!is.na(min(dups[6])) & min(dups[6]) <= min(baseline) & !is.na(max(dups[7])) & max(dups[7] >= max(baseline))) {
           if (is.null(printed)) {
-            cat("Note: In addition to the stations found, the following combinations may provide sufficient baseline data.\n\n")
+            cat("Note: In addition to the stations found, the following",
+                "combinations may provide sufficient baseline data.\n\n")
             printed <- 1
             combo <- 1
           }
-          cat("## Combination", combo, "at coordinates", coords$LatitudeDD[rw], coords$LongitudeDD[rw],"\n\n")
+          cat(">> Combination", combo, "at coordinates", coords$LatitudeDD[rw],
+              coords$LongitudeDD[rw], "\n\n")
           cat(paste0(dups$StationID, ": ", dups$Name, "\n"), "\n", sep = "")
           combo <- combo + 1
         }
       }
     }
   }
-
+  
   class(filt) <- c("hcd_station_list", class(filt))
   filt
 }

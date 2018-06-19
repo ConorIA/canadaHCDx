@@ -6,11 +6,14 @@ context("Test `map_stations()`")
 
 ## test a map of one station
 test_that("map_stations() can map a single station", {
-  map_stations(5051)
+  map <- map_stations(5051)
+  expect_that(map, is_a("leaflet"))
+  expect_that(map, is_a("htmlwidget"))
 })
 
 ## test a map of one searched stations
 test_that("map_stations() can map a station search result", {
-  map_stations(df)
+  map <- map_stations(df)
+  expect_that(map, is_a("leaflet"))
+  expect_that(map, is_a("htmlwidget"))
 })
-

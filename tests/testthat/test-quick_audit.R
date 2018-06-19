@@ -33,5 +33,5 @@ test_that("quick_audit() can audit with missing variables", {
 
 ## test quick_audit warns if "year" or "month" not set correctly
 test_that("quick_audit() will fail if `by` is a typo", {
-  expect_warning(quick_audit(indat, by = "mnoth"), "By was neither \"month\" nor \"year\". Defaulting to year.", fixed=TRUE)
+  expect_warning(quick_audit(indat, by = "mnoth"), "By was neither \"month\" nor \"year\". Defaulting to year.", fixed = TRUE)
 })

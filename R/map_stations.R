@@ -1,25 +1,25 @@
-##' @title Map canadaHCD stations on an interactive map
-##'
-##' @description Show the stations of interest on an interactive map using Leaflet. Zoom levels are guessed based on an RStudio plot window.
-##'
-##' @param station character; one or more station ID numbers to show on the map, or a table output by \code{\link{find_station}}.
-##' @param zoom numeric; the level to zoom the map to.
-##' @param type character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\url{https://s2maps.eu}).
-##'
-##' @importFrom dplyr "%>%" filter
-##' @importFrom leaflet addCircleMarkers addMarkers addTiles addWMSTiles leaflet leafletCRS leafletOptions setView WMSTileOptions
-##' @importFrom rlang .data
-##' @importFrom tibble tibble
-##'
-##' @export
-##'
-##' @author Conor I. Anderson
-##'
-##' @examples
-##' # Make a map of all the stations named "Yellowknife".
-##' map_stations(find_station(name = "Yellowknife"))
-##' # Make a map of all stations within 50km of Toronto Station 5051.
-##' map_stations(find_station(target = 5051, dist = 0:50))
+#' @title Map canadaHCD stations on an interactive map
+#'
+#' @description Show the stations of interest on an interactive map using Leaflet. Zoom levels are guessed based on an RStudio plot window.
+#'
+#' @param station character; one or more station ID numbers to show on the map, or a table output by \code{\link{find_station}}.
+#' @param zoom numeric; the level to zoom the map to.
+#' @param type character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\url{https://s2maps.eu}).
+#'
+#' @importFrom dplyr "%>%" filter
+#' @importFrom leaflet addCircleMarkers addMarkers addTiles addWMSTiles leaflet leafletCRS leafletOptions setView WMSTileOptions
+#' @importFrom rlang .data
+#' @importFrom tibble tibble
+#'
+#' @export
+#'
+#' @author Conor I. Anderson
+#'
+#' @examples
+#' # Make a map of all the stations named "Yellowknife".
+#' map_stations(find_station(name = "Yellowknife"))
+#' # Make a map of all stations within 50km of Toronto Station 5051.
+#' map_stations(find_station(target = 5051, dist = 0:50))
 
 map_stations <- function(station, zoom, type = "osm") {
 
@@ -37,12 +37,12 @@ map_stations <- function(station, zoom, type = "osm") {
   
   hilat <- ceiling(max(station$LatitudeDD))
   lolat <- floor(min(station$LatitudeDD))
-  lats <- (hilat + lolat)/2
-  lons <- (ceiling(max(station$LongitudeDD)) + floor(min(station$LongitudeDD)))/2
+  lats <- (hilat + lolat) / 2
+  lons <- (ceiling(max(station$LongitudeDD)) + floor(min(station$LongitudeDD))) / 2
   latrng <- (hilat - lolat)
   if (missing(zoom)) {
-    zoomlevels <- tibble(range = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), zoom = c(10,8,7,7,7,6,6,6,5,5,5,5,5,5,5,5,4))
-    zoom <- zoomlevels$zoom[which(zoomlevels$range == min(as.integer(latrng), 16L))]
+    zoomlevels <- tibble(r = 0:16, z = c(10, 8, 7, 7, 7, 6, 6, 6, rep(5, 8), 4))
+    zoom <- zoomlevels$z[which(zoomlevels$r == min(as.integer(latrng), 16L))]
   }
 
   map <- if (type == "sentinel") {

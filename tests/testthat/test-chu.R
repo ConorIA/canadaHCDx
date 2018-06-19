@@ -24,11 +24,10 @@ test_that("chu() can report GDDs", {
 
 ## should fail if we don't pass it a data frame
 test_that("chu() fails when passed a vector", {
-  expect_error(chu(1:5, report = "foo"), "Input data must be a data frame.", fixed=TRUE)
+  expect_error(chu(1:5, report = "foo"), "Input data must be a data frame.", fixed = TRUE)
 })
 
 ## should fail when no correct report value requested
 test_that("chu() fails when no correct report value is requested", {
-  expect_error(chu(df, report = "foo"), "We can only calculate CHUs and GDDs. Please check your report argument.", fixed=TRUE)
+  expect_error(chu(df, report = "foo"), "We can only calculate CHUs and GDDs. Please check your report argument.", fixed = TRUE)
 })
-

@@ -73,7 +73,7 @@ get_station_data <- function(assume_yes = FALSE, retry_time, quiet = FALSE) {
     mat <- gregexpr("\\w[0-9]+\\w", inven)
     size <- format(structure(as.integer(substr(inven, mat[[1]][1],
                           mat[[1]][1] + attributes(mat[[1]])$match.length - 1)),
-                          class="object_size"), units="auto")
+                          class = "object_size"), units = "auto")
     list("mod_time" = mod_time, "size" = size)
   }
   
@@ -92,7 +92,7 @@ get_station_data <- function(assume_yes = FALSE, retry_time, quiet = FALSE) {
   if (st$exists("last_query") && st$get("last_query") >= Sys.time() - retry_time) {
     st$set("last_query", Sys.time())
     if (st$exists("station_data")) {
-      if(!quiet) print(retry_msg)
+      if (!quiet) print(retry_msg)
       return(st$get("station_data"))
     } else {
       warning(paste("We can't download data, but none exists in the cache.",
@@ -108,11 +108,13 @@ get_station_data <- function(assume_yes = FALSE, retry_time, quiet = FALSE) {
     retry_time <- 900
     retry_msg <- "An error occured during our update check. We will try again within 15 minutes."
     if (st$exists("station_data")) {
-      if(!quiet) print(retry_msg)
+      if (!quiet) print(retry_msg)
       return(st$get("station_data")) 
     } else {
-      stop(paste("We cannot connect to Environment Canada's FTP site:",
-               attr(tab_attrs, "condition")))
+      warning(paste("We cannot connect to Environment Canada's FTP site:",
+                    attr(tab_attrs, "condition"),
+                    "Falling back to built-in data.frame."))
+      return(station_data_fallback)
     }
   } else {
   

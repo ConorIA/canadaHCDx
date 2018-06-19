@@ -50,10 +50,10 @@ test_that("find_station() can locate a station by distance for coordinates", {
 
 ## find_station should fail if we spell the province incorrectly
 test_that("find_station() fails if provice is incorrect", {
-  expect_error(find_station(province = "Qwebek", assume_yes = TRUE), "No data found for that province. Did you spell it correctly?", fixed=TRUE)
+  expect_error(find_station(province = "Qwebek", assume_yes = TRUE), "One or more province name(s) incorrect.", fixed = TRUE)
 })
 
 ## find_station should fail if we use a bad province code
 test_that("find_station() fails if provice code is incorrect", {
-  expect_error(find_station(province = "NO", assume_yes = TRUE), "Incorrect province code provided.", fixed=TRUE)
+  expect_error(find_station(province = "NO", assume_yes = TRUE), "Incorrect province code(s) provided.", fixed = TRUE)
 })
