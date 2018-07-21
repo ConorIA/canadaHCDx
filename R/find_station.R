@@ -2,7 +2,7 @@
 #'
 #' @description Search for stations in the Historical Climate Data inventory name, available data, and/or distance to a target.
 #'
-#' @param name character; optional character string or a regular expression to be matched against known station names. See \code{\link{grep}} for details.
+#' @param name character; optional character vector or a regular expression to be matched against known station names. See \code{\link{grep}} for details.
 #' @param ignore.case logical; by default the search for station names is not case-sensitive.
 #' @param glob logical; use wildcards in station name as detailed in \code{link{glob2rx}}.
 #' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
@@ -49,9 +49,8 @@ find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE,
   
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
-    if (glob) {
-      name <- glob2rx(name)
-    }
+    if (glob) name <- glob2rx(name)
+    if (length(name) > 1) name <- paste(name, collapse = "|")
     filt <- filter(filt, grepl(name, .data$Name,
                                ignore.case = ignore.case, ...))
   }

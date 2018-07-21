@@ -1,7 +1,7 @@
 Package: canadaHCDx
 Type: Package
 Title: Additional functions for the canadaHCD package
-Version: 0.0.5
+Version: 0.0.6
 Date: 2018-06-18
 Authors@R: c(person(given = c("Conor", "I."), family = "Anderson", 
            role = c("aut","cre"), email = "conor.anderson@utoronto.ca"),
