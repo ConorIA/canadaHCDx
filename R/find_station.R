@@ -7,7 +7,7 @@
 #' @param glob logical; use wildcards in station name as detailed in \code{link{glob2rx}}.
 #' @param province character; optional character string to filter by a given province. Use full name or two-letter code, e.g. ON for Ontario.
 #' @param baseline vector; optional vector with a start and end year for a desired baseline.
-#' @param type character; type of data to search for. Only used if a baseline is specified. Defaults to "hourly".
+#' @param type character; period columns to return. \code{NULL} (default) returns hourly, daily, and monthly.
 #' @param duplicates Boolean; if TRUE, will attempt to provide combinations of stations (at the same coordinates) that provide enough baseline data.
 #' @param target numeric; optional numeric value of the target (reference) station, or a vector of length 2 containing latitude and longitude (in that order).
 #' @param dist numeric; vector with a range of distance from the target in km. Only used if a target is specified. (default is 0:100)
@@ -73,13 +73,30 @@ find_station <- function(name = NULL, ignore.case = TRUE, glob = FALSE,
   
   # Next, set the data we are interested in, if necessary
   if (!is.null(baseline)) {
-    if (baseline[1] > baseline[length(baseline)]) stop("error: check baseline format")
-    if (type == "hourly") data_vars <- c("HourlyFirstYr", "HourlyLastYr")
-    if (type == "daily") data_vars <- c("DailyFirstYr", "DailyLastYr")
-    if (type == "monthly") data_vars <- c("MonthlyFirstYr", "MonthlyLastYr")
-  } else {
-    data_vars <- NULL
+    if (baseline[1] > baseline[length(baseline)]) stop("Baseline not chronological.")
+    if (is.null(type)) {
+      warning("We need to know the data type. Baseline ignored.")
+      baseline <- NULL
+    }
   }
+  
+  if (!is.null(type)) {
+    if (any(!type %in% c("hourly", "daily", "monthly"))) {
+      warning("One of more types invalid. Omitting.")
+      type <- type[type %in% c("hourly", "daily", "monthly")]
+    }
+    if (!is.null(baseline) & length(type) > 1) {
+      warning("We can only filter by one type at a time. Baseline ignored.")
+      baseline <- NULL
+    }
+    data_vars <- NULL
+    if ("hourly" %in% type) data_vars <- c(data_vars, "HourlyFirstYr", "HourlyLastYr")
+    if ("daily" %in% type) data_vars <- c(data_vars, "DailyFirstYr", "DailyLastYr")
+    if ("monthly" %in% type) data_vars <- c(data_vars, "MonthlyFirstYr", "MonthlyLastYr")
+  } else {
+    data_vars <- c("HourlyFirstYr", "HourlyLastYr", "DailyFirstYr", "DailyLastYr", "MonthlyFirstYr", "MonthlyLastYr")
+  }
+
   
   # Make a table with the info we want
   vars_wanted <- c("Name", "Province", "StationID", "LatitudeDD", "LongitudeDD", data_vars)

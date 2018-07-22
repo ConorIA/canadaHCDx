@@ -14,6 +14,7 @@ test_that("get_station_data() can download station data", {
 })
 
 st$set("last_mod",  "2018-01-01 00:00:00 EST")
+st$set("retry_time", 0)
 
 ## test GDD calculation
 test_that("get_station_data() detects outdated station data", {

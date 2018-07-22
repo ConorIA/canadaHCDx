@@ -24,7 +24,7 @@ get_station_data <- function(assume_yes = FALSE, retry_time, quiet = FALSE) {
                      "Station%20Inventory%20EN.csv")
     f <- tempfile("station_data_")
     on.exit(file.remove(f))
-    dat <- try(curl_download(tab, f))
+    dat <- try(curl_download(tab, f, quiet = FALSE))
     if (inherits(dat, "try-error")) {
       stop("Error downloading file")
     }
